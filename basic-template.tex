@@ -1,0 +1,237 @@
+% Document type/layout
+% ==========================================================================
+\documentclass{article}				% -> Article layout (default)
+%\documentclass[journal]{IEEEtran}	% -> Two column journal layout
+%\documentclass{report}				% -> Report layout
+% ==========================================================================
+
+% Add packages to expand the functionality with the following command:
+% \usepackage[options]{packagename}
+% ==========================================================================
+\usepackage{bookmark}	% - Show all sections in the pdf as metadata
+\usepackage{hyperref}	% - For metada rendering in PDFs
+\usepackage{lastpage}	% - To get the toatal numbe rof pages
+\usepackage{fancyhdr}	% - For header and footer
+\usepackage{tocloft}	% - For table of contents
+% ==========================================================================
+
+% Variables
+% ==========================================================================
+\newcommand*{\mytitle}{The title}		% - Document title
+\newcommand*{\myauthor}{One author}		% - Document author (one author)
+% \newcommand*{\myauthorOne}{AuthorOne}	% - Document authors (many authors)
+% \newcommand*{\myauthorTwo}{AuthorTwo}	% - Document authors (many authors)
+% \newcommand*{\myauthor}{\texorpdfstring{\myauthorOne, \myauthorTwo}{\myauthorOne;\myauthorTwo}} % - Document authors (many authors)
+\newcommand*{\mysubject}{The subject}			% - Document subject
+\newcommand*{\mydate}{\normalsize 03.09.2018}	% - Document release date
+% ==========================================================================
+
+% Document data
+% ==========================================================================
+\title{\mytitle}	% - Set the visual title
+\author{\myauthor}	% - Set the visual author
+\date{\mydate}		% - Set the visual date
+\hypersetup{		% - Metadata setup
+	pdftitle={\mytitle},		% - Set title of the PDF file
+	pdfsubject={\mysubject},	% - Set subject of the PDF file
+	pdfauthor={\myauthor}		% - Set author of the PDF file
+}
+% ==========================================================================
+
+% Header and footer
+% ==========================================================================
+\pagestyle{fancy}		% - Style of header/footer	
+\lhead{Left header} % - Left header text
+\chead{Center header} % - Center header text
+\rhead{Right header} % - Right header text
+% -------------------------------------------------------------------------
+\lfoot{Left footer} % - Left footer text
+\cfoot{Center footer - Page number \thepage} % - Center footer text
+\rfoot{\thepage\ of \pageref{LastPage}} % - Right footer
+% -------------------------------------------------------------------------
+\renewcommand{\headrulewidth}{0.4pt} % - Black line below header text
+\renewcommand{\footrulewidth}{0.4pt} % - Black line over footer text
+% ==========================================================================
+
+
+% Document content begin
+\begin{document}\thispagestyle{empty}
+
+% Create title - changes the pagestyle
+\maketitle
+
+% Abstract of document
+\begin{abstract}
+\centering % - Center the contents on the page
+Short summary of the document aka abstract.
+\end{abstract}
+
+% Show the table of contents - changes the pagestyle
+\tableofcontents
+
+% Use the following command to remove any headers and footers on the page at this point
+\thispagestyle{fancy} % - Use "fancy" instead of "empty" if you want header/footer
+
+% Use this when you use the document layout "\documentclass{report}"
+% \chapter{First Chapter}
+
+% Document section
+\section{Introduction}
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+
+% Document section
+\section{Section}
+
+% Document section
+\subsection{Subsection}
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+culpa qui officia deserunt mollit anim id est laborum.
+
+% Document section
+\subsection{Another subsection}
+
+\subsubsection{Subsubsection}
+
+test
+
+\subsection{Lists}
+
+\subsubsection{Unordered}
+
+Simple list:
+
+\begin{itemize}
+	\item One entry in the list
+	\item Another entry in the list
+\end{itemize}
+
+Nested list:
+
+\begin{itemize}
+	\item  First Level
+	\begin{itemize}
+		\item  Second Level
+		\begin{itemize}
+			\item  Third Level
+			\begin{itemize}
+				\item  Fourth Level
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Ordered}
+
+Simple list:
+
+\begin{enumerate}
+	\item One entry in the list
+	\item Another entry in the list
+\end{enumerate}
+
+Nested list:
+
+\renewcommand{\labelenumii}{\Roman{enumii}}
+\begin{enumerate}
+	\item First level item
+	\item First level item
+	\begin{enumerate}
+		\setcounter{enumii}{4}
+		\item Second level item
+		\item Second level item
+		\begin{enumerate}
+			\item Third level item
+			\item Third level item
+			\begin{enumerate}
+				\item Fourth level item
+				\item Fourth level item
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+
+\subsubsection{Combine them}
+
+\begin{enumerate}
+	\item The labels consists of sequential numbers.
+	\begin{itemize}
+		\item The individual entries are indicated with a black dot, a so-called bullet.
+		\item The text in the entries may be of any length.
+	\end{itemize}
+	\item The numbers starts at 1 with every call to the enumerate environment.
+	\begin{itemize}
+		\item The individual entries are indicated with a black dot, a so-called bullet.
+		\begin{itemize}
+			\item The individual entries are indicated with a black dot, a so-called bullet.
+			\begin{itemize}
+				\item The individual entries are indicated with a black dot, a so-called bullet.
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{enumerate}
+
+\subsubsection{Subsubsection}
+A normal sentence.
+
+A new sentence with insertion.
+\newline
+Thanks to the \verb|\newline| command this insertions goes away.\\
+To block concatenating on the next line you use \verb|\\| at the end of the line.
+
+\section{Equations}
+
+Inside of text you can use the inline formatting to show equations or symbols by inserting it inside two  \verb|$| symbols like this: $E=mc^2$ (\verb|$E=mc^2$|).
+
+\vspace{5mm} %5mm vertical space
+
+Or show big equations like this (\verb|$$E=mc^2$$|):
+
+$$x^n+y^n=z^n$$
+
+Or show big equations like this:
+
+\begin{equation}
+\label{simple_equation}
+\alpha = \sqrt{ \beta }
+\end{equation}
+
+
+\begin{figure}
+    \centering
+%    \includegraphics[width=3.0in]{myfigure}
+    \caption{Simulation Results}
+    \label{simulationfigure}
+\end{figure}
+
+% Create a new page
+\newpage
+
+\section{Conclusion}
+
+\subsection{Conclusion 2}
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+fugiat nulla pariatur.
+
+\vfill
+
+\section{Heading at the end of the page}
+
+Thanks to the command \verb|\vfill| a new vertical space will be created and push this section as low as it can get.
+
+% Document end
+\end{document}

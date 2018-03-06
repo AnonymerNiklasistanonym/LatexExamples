@@ -41,12 +41,14 @@ You just click in the menu bar `Options`, then `Configure TeXstudio` and then se
 
 ### 1. Step - Create one
 
-Create with this website simple and fast your automata: http://madebyevan.com/fsm/
-Then download the automatas created LaTeX code.
+Create with this website simple and fast your automata: http://madebyevan.com/fsm/ (It's also even open source here on GitHub: https://github.com/evanw/fsm).
+
+Then download the automatically created LaTeX code of this automata.
 
 ### 2. Step - Export/Edit or optimize
 
-On this website you can now edit special characters or more (you can also do this in TeXstudio, but I prefer it this way: http://www.tlhiv.org/ltxpreview/
-(don't forget to add the needed packages!)
+On this website you can now edit special characters or more (you can also do this in TeXstudio, but I prefer it this way: http://www.tlhiv.org/ltxpreview/.
+
+*(don't forget to add the needed packages!)*
 
 Now you can copy the code and import it directly into your LaTeX document - or you can download it as a vector graphic if you want.

@@ -1,0 +1,573 @@
+\documentclass{article}
+
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{bookmark}
+\usepackage{hyperref}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{xcolor}
+\usepackage{mathdots}
+\usepackage{mathtools}
+
+
+\title{Equations}
+
+\begin{document}
+
+\maketitle
+
+\section{Inline}
+
+\subsection{Like normal text}
+
+The formula is $a^2+b^2=c^2$.
+
+\begin{lstlisting}[frame=single]
+The formula is $a^2+b^2=c^2$.
+\end{lstlisting}
+
+\subsection{Emphasized in normal text}
+
+The formula is $$a^2+b^2=c^2.$$
+
+\begin{lstlisting}[frame=single]
+The formula is $$a^2+b^2=c^2.$$
+\end{lstlisting}
+\begin{lstlisting}[frame=single]
+The formula is \[a^2+b^2=c^2.\]
+\end{lstlisting}
+
+\section{Big equations}
+
+\subsection{Without numbering}
+
+\begin{equation*}
+a^2+b^2=c^2
+\end{equation*}
+
+\begin{lstlisting}[frame=single]
+$$...$$
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\begin{equation*}...\end{equation*}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\begin{align*}...\end{align*}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\[...\]
+\end{lstlisting}
+
+\subsection{With numbering}
+
+\begin{equation}
+a^2+b^2=c^2
+\end{equation}
+
+\begin{lstlisting}[frame=single]
+\begin{equation}...\end{equation}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\begin{align}...\end{align}
+\end{lstlisting}
+
+\subsection{With more than one line}
+
+\begin{align*}
+	x &= \frac{p}{2} \pm \sqrt{\left( \frac{p}{2} \right)^2 - q}\\
+	  &= - \frac{p}{2} \pm \sqrt{\left( \frac{p}{2} \right)^4 - q}\\
+	  &= 4 
+\end{align*}
+
+\begin{lstlisting}[frame=single]
+\begin{align}...\end{align}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+\begin{align*}...\end{align*}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=single]
+x&=\frac{p}{2}\pm\sqrt{\left(\frac{p}{2}\right)^2-q}\\
+ &=-\frac{p}{2}\pm\sqrt{\left(\frac{p}{2}\right)^4-q}\\
+ &=4 
+\end{lstlisting}
+
+\section{Mathematical fonts}
+
+\subsection{The fonts}
+
+\begin{itemize}
+	\item Normal: $A,B,C$, $a,b,c$, $1,2,3$
+	\item \verb|\mathnormal{…}|: $\mathnormal{A,B,C}$, $\mathnormal{a,b,c}$, $\mathnormal{1,2,3}$
+	\item \verb|\mathrm{…}|: $\mathrm{A,B,C}$, $\mathrm{a,b,c}$, $\mathrm{1,2,3}$
+	\item \verb|\mathit{…}|: $\mathit{A,B,C}$, $\mathit{a,b,c}$, $\mathit{1,2,3}$
+	\item \verb|\mathbf{…}|: $\mathbf{A,B,C}$, $\mathbf{a,b,c}$, $\mathbf{1,2,3}$	
+	\item \verb|\mathsf{…}|: $\mathsf{A,B,C}$, $\mathsf{a,b,c}$, $\mathsf{1,2,3}$
+	\item \verb|\mathtt{…}|: $\mathtt{A,B,C}$, $\mathtt{a,b,c}$, $\mathtt{1,2,3}$
+	\item \verb|\mathfrak{…}|: $\mathfrak{A,B,C}$, $\mathfrak{a,b,c}$, $\mathsf{1,2,3}$ (It requires the package \verb|amsfonts|)
+	\item \verb|\mathbb{…}|: $\mathbb{A,B,C}$, $\mathbb{a,b,c}$, $\mathsf{1,2,3}$ (It requires the package \verb|amsfonts|)
+	\item \verb|\mathcal{…}|: $\mathcal{A,B,C}$
+	\item \verb|\mathscr{…}|: $\mathscr{A,B,C}$ (It requires the package \verb|mathrsfs|)
+\end{itemize}
+
+\subsection{Font styling}
+
+\begin{itemize}
+	\item Make bold: $\boldsymbol{\beta} = (\beta_1,\beta_2,\dotsc,\beta_n)$ (\verb|\boldsymbol{…}|)
+	\item Add color: $k = {\color{red}x} \mathbin{\color{blue}{-}} 2$ (\verb|{\color{red}…}, \mathbin{\color{blue{…}}|)
+	\item Bonus: Render text in math mode: $\text{text}$ (\verb|\text{text}|)
+\end{itemize}
+
+\subsection{Accents}
+
+\begin{itemize}
+	\item \verb|a'|, \verb|a^{\prime}|: $a'$
+	\item \verb|a''|, \verb|a^{\prime\prime}|: $a''$
+	\item \verb|\hat{a}|: $\hat{a}$
+	\item \verb|\bar{a}|: $\bar{a}$
+	\item \verb|\grave{a}|: $\grave{a}$
+	\item \verb|\acute{a}|: $\acute{a}$
+	\item \verb|\dot{a}|: $\dot{a}$
+	\item \verb|\ddot{a}|: $\ddot{a}$
+	\item \verb|\dddot{a}|: $\dddot{a}$
+	\item \verb|\overrightarrow{AB}|: $\overrightarrow{a}$
+	\item \verb|\overleftarrow{AB}|: $\overleftarrow{a}$
+	\item \verb|\overline{a}|: $\overline{a}$
+	\item \verb|\check{a}|: $\check{a}$
+	\item \verb|\breve{a}|: $\breve{a}$
+	\item \verb|\vec{a}|: $\vec{a}$
+	\item \verb|\not{a}|: $\not{a}$
+	\item \verb|\tilde{a}|: $\tilde{a}$
+	\item \verb|\underline{a}|: $\underline{a}$
+	\item \verb|\mathring{a}|: $\mathring{a}$
+	\item \verb|\widehat{AAA}|: $\widehat{AAA}$
+	\item \verb|\widetilde{AAA}|: $\widetilde{AAA}$
+	\item \verb|\stackrel\frown{AAA}|: $\stackrel\frown{AAA}$
+\end{itemize}
+
+\subsection{Dots}
+
+\begin{itemize}
+	\item \verb|\dots|: $\dots$
+	\item \verb|\ldots|: $\ldots$
+	\item \verb|\cdots|: $\cdots$
+	\item \verb|\vdots|: $\vdots$
+	\item \verb|\ddots|: $\ddots$
+	\item \verb|\iddots|: $\iddots$ (It requires the package \verb|mathdots|)
+\end{itemize}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{7}{c}r}
+	Code & Output & Description \\
+	\hline
+	\verb|A_1,A_2,\dotsc,| & $A_1,A_2,\dotsc,$ & 	for "dots with commas" \\
+	\verb|A_1+\dotsb+A_N| & $A_1+\dotsb+A_N$ & for "dots with binary operators/relations" \\
+	\verb|A_1 \dotsm A_N| & $A_1 \dotsm A_N$ & for "multiplication dots" \\
+	\verb|\int_a^b \dotsi| & $\displaystyle{\int_a^b \dotsi}$ & 	for "dots with integrals" \\
+	\verb|A_1\dotso A_N| & $A_1\dotso A_N$ & for "other dots" (none of the above)
+\end{tabular}
+
+\subsection{Symbols}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|<| & $<$ & \vline & \verb|>| & $>$ & \vline & \verb|=| & $=$ \\
+	\verb|\leq| & $\leq$ & \vline & \verb|\geq| & $\geq$ & \vline & \verb|\doteq| & $\doteq$ \\
+	\verb|\ll| & $\ll$ & \vline & \verb|\gg| & $\gg$ & \vline & \verb|\equiv| & $\equiv$ \\
+	\verb|\subset| & $\subset$ & \vline & \verb|\supset| & $\supset$ & \vline & \verb|\approx| & $\approx$ \\
+	\verb|\subseteq| & $\subseteq$ & \vline & \verb|\supseteq| & $\supseteq$ & \vline & \verb|\cong| & $\cong$ \\
+	\verb|\not\subseteq| & $\not\subseteq$ & \vline & \verb|\not\supseteq| & $\not\supseteq$ & \vline & \verb|\simeq| & $\simeq$ \\
+	\verb|\sqsubset| & $\sqsubset$ & \vline & \verb|\sqsupset| & $\sqsupset$ & \vline & \verb|\sim| & $\sim$ \\
+	\verb|\sqsubseteq| & $\sqsubseteq$ & \vline & \verb|\sqsupseteq| & $\sqsupseteq$ & \vline & \verb|\propto| & $\propto$ \\
+	\verb|\preceq| & $\preceq$ & \vline & \verb|\succeq| & $\succeq$ & \vline & \verb|\neq| & $\neq$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\parallel| & $\parallel$ & \vline & \verb|\not\parallel| & $\not\parallel$ & \vline & \verb|\pm| & $\pm$ \\
+	\verb|\asymp| & $\asymp$ & \vline & \verb|\bowtie| & $\bowtie$ & \vline & \verb|\mp| & $\mp$ \\
+	\verb|\vdash| & $\vdash$ & \vline & \verb|\dashv| & $\dashv$ & \vline & \verb|\times| & $\times$ \\
+	\verb|\in| & $\in$ & \vline & \verb|\ni| & $\ni$ & \vline & \verb|\div| & $\div$ \\
+	\verb|\smile| & $\smile$ & \vline & \verb|\frown| & $\frown$ & \vline & \verb|\ast| & $\ast$ \\
+	\verb|\models| & $\models$ & \vline & \verb|\notin| & $\notin$ & \vline & \verb|\star| & $\star$ \\
+	\verb|\perp| & $\perp$ & \vline & \verb|\mid| & $\mid$ & \vline & \verb|\dagger| & $\dagger$ \\
+	\verb|\prec| & $\prec$ & \vline & \verb|\succ| & $\succ$ & \vline & \verb|\ddagger| & $\ddagger$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\cap| & $\cap$ & \vline & \verb|\diamond| & $\diamond$ & \vline & \verb|\oplus| & $\oplus$ \\
+	\verb|\cup| & $\cup$ & \vline & \verb|\bigtriangleup| & $\bigtriangleup$ & \vline & \verb|\ominus| & $\ominus$ \\
+	\verb|\uplus| & $\uplus$ & \vline & \verb|\bigtriangledown| & $\bigtriangledown$ & \vline & \verb|\otimes| & $\otimes$ \\
+	\verb|\sqcap| & $\sqcap$ & \vline & \verb|\triangleleft| & $\triangleleft$ & \vline & \verb|\oslash| & $\oslash$ \\
+	\verb|\sqcup| & $\sqcup$ & \vline & \verb|\triangleright| & $\triangleright$ & \vline & \verb|\odot| & $\odot$ \\
+	\verb|\vee| & $\vee$ & \vline & \verb|\bigcirc| & $\bigcirc$ & \vline & \verb|\circ| & $\circ$ \\
+	\verb|\wedge| & $\wedge$ & \vline & \verb|\bullet| & $\bullet$ & \vline & \verb|\setminus| & $\setminus$ \\
+	\verb|\cdot| & $\cdot$ & \vline & \verb|\wr| & $\wr$ & \vline & \verb|\amalg| & $\amalg$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\exists| & $\exists$ & \vline & \verb|\rightarrow, \to| & $\to$ \\
+	\verb|\not\exists| & $\not\exists$ & \vline & \verb|\leftarrow, \gets| & $\gets$ \\
+	\verb|\forall| & $\forall$ & \vline & \verb|\mapsto| & $\mapsto$ \\
+	\verb|\neg| & $\neg$ & \vline & \verb|\implies| & $\implies$ \\
+	\verb|\subset| & $\subset$ & \vline & \verb|\Rightarrow| & $\Rightarrow$ \\
+	\verb|\supset| & $\supset$ & \vline & \verb|\leftrightarrow| & $\leftrightarrow$ \\
+	\verb|\in| & $\in$ & \vline & \verb|\iff| & $\iff$ \\
+	\verb|\not\in| & $\not\in$ & \vline & \verb|\Leftrightarrow| & $\Leftrightarrow$ \\
+	\verb|\ni| & $\ni$ & \vline & \verb|\top| & $\top$ \\
+	\verb|\not\ni| & $\not\ni$ & \vline & \verb|\bot| & $\bot$ \\
+	\verb|\land| & $\land$ & \vline & \verb|\emptyset| & $\emptyset$ \\
+	\verb|\lor| & $\lor$ & \vline &  & 
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\mid| & $\mid$ & \vline & \verb=\|= & $\|$ \\
+	\verb|\{| & $\{$ & \vline & \verb|\}| & $\}$ \\
+	\verb|\uparrow| & $\uparrow$ & \vline & \verb|\Uparrow| & $\Uparrow$ \\
+	\verb|\downarrow| & $\downarrow$ & \vline & \verb|\Downarrow| & $\Downarrow$ \\
+	\verb|/| & $/$ & \vline & \verb|\backslash| & $\backslash$ \\
+	\verb|\langle| & $\langle$ & \vline & \verb|\rangle| & $\rangle$ \\
+	\verb|\lceil| & $\lceil	$ & \vline & \verb|\rceil| & $\rceil$ \\
+	\verb|\not\in| & $\not\in$ & \vline & \verb|\rfloor| & $\rfloor$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|A,\alpha| & $A,\alpha$ & \vline & \verb|I,\iota| & $I,\iota$ & \vline & \verb|P,\rho| & $P,\rho$ \\
+	\verb|B,\beta| & $B,\beta$ & \vline & \verb|K,\kappa| & $K,\kappa$ & \vline & \verb|\Sigma,\sigma| & $\Sigma,\sigma$ \\
+	\verb|\Gamma,\gamma| & $\Gamma,\gamma$ & \vline & \verb|\Lambda,\lambda| & $\Lambda,\lambda$ & \vline & \verb|T,\tau| & $T,\tau$ \\
+	\verb|\Delta,\delta| & $\Delta,\delta$ & \vline & \verb|M,\mu| & $M,\mu$ & \vline & \verb|\Upsilon,\upsilon| & $\Upsilon,\upsilon$ \\
+	\verb|E,\epsilon| & $E,\epsilon$ & \vline & \verb|N,\nu| & $N,\nu$ & \vline & \verb|\Phi,\phi| & $\Phi,\phi$ \\
+	\verb|Z,\zeta| & $Z,\zeta$ & \vline & \verb|\Xi,\xi| & $\Xi,\xi$ & \vline & \verb|X,\chi| & $X,\chi$ \\
+	\verb|H,\eta| & $H,\eta$ & \vline & \verb|O,o| & $O,o$ & \vline & \verb|\Psi,\psi| & $\Psi,\psi$ \\
+	\verb|\Theta,\theta| & $\Theta,\theta$ & \vline & \verb|\Pi,\pi| & $\Pi,\pi$ & \vline & \verb|\Omega,\omega| & $\Omega,\omega$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\partial| & $\partial$ & \vline & \verb|\imath| & $\imath$ \\
+	\verb|\eth| & $eth$ & \vline & \verb|\jmath| & $\jmath$ \\
+	\verb|\hbar| & $\hbar$ & \vline & \verb|\ell| & $\ell$ \\
+	\verb|\Re| & $\Re$ & \vline & \verb|\nabla| & $\nabla$ \\
+	\verb|\Im| & $\Im$ & \vline & \verb|\Box| & $\Box$ \\
+	\verb|\wp| & $\cosh$ & \vline & \verb|\infty| & $\infty$ \\
+	\verb|\aleph| & $\aleph$ & \vline & &
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{tabular}{l*{10}{c}r}
+	Code & Symbol & \vline & Code & Symbol \\
+	\hline
+	\verb|\sin| & $\sin$ & \vline & \verb|\arcsin| & $\arcsin$ \\
+	\verb|\cos| & $\cos$ & \vline & \verb|\arccos| & $\arccos$ \\
+	\verb|\tan| & $\tan$ & \vline & \verb|\arctan| & $\arctan$ \\
+	\verb|\cot| & $\cot$ & \vline & \verb|\csc| & $\csc$ \\
+	\verb|\sinh| & $\sinh$ & \vline & \verb|\sec| & $\sec$ \\
+	\verb|\cosh| & $\cosh$ & \vline & & \\
+	\verb|\tanh| & $\tanh$ & \vline & & \\
+	\verb|\coth| & $\coth$ & \vline & &
+\end{tabular}
+
+\section{Matrices}
+
+\begin{tabular}{l*{10}{c}r}
+	Name & Delimiter \\
+	\hline
+	\verb|matrix| & $\begin{matrix}a & b\\ c & d\end{matrix}$ \vspace{1mm} \\
+	\verb|pmatrix| & $\begin{pmatrix}a & b\\ c & d\end{pmatrix}$ \vspace{1mm} \\
+	\verb|bmatrix| & $\begin{bmatrix}a & b\\ c & d\end{bmatrix}$ \vspace{1mm} \\
+	\verb|Bmatrix| & $\begin{Bmatrix}a & b\\ c & d\end{Bmatrix}$ \vspace{1mm} \\
+	\verb|vmatrix| & $\begin{vmatrix}a & b\\ c & d\end{vmatrix}$ \vspace{1mm} \\
+	\verb|Vmatrix| & $\begin{Vmatrix}a & b\\ c & d\end{Vmatrix}$
+\end{tabular}
+
+\vspace{5mm}
+
+\begin{lstlisting}[frame=single]
+\begin{matrix}
+	a & b \\
+	c & d
+\end{matrix}
+\end{lstlisting}
+
+A matrix in text must be set smaller:
+$\bigl(\begin{smallmatrix}
+a&b \\ c&d
+\end{smallmatrix} \bigr)$
+to not increase leading in a portion of text.
+
+\section{Examples}
+
+\subsection{Solve a formula}
+
+\begin{align*}
+	x &= \frac{p}{2} \pm \sqrt{\left( \frac{p}{2} \right)^2 - q}\\
+	  &= - \frac{p}{2} \pm \sqrt{\left( \frac{p}{2} \right)^4 - q}\\
+	  &= 4 
+\end{align*}
+
+\subsection{Different cases}
+
+\begin{align*}
+f(n) =
+\begin{cases}
+	n/2			& \quad \text{if } n \text{ is even}\\
+	-(n+1)/2	& \quad \text{if } n \text{ is odd}
+\end{cases}
+\end{align*}
+
+\subsection{Unsorted}
+
+\begin{align*}
+\left(
+	\begin{array}{c}
+		n\\
+		r
+	\end{array}
+\right) = \frac{n!}{r!(n-r)!}
+\end{align*}
+
+\begin{align*}
+\left(\frac{x^2}{y^3}\right)
+\end{align*}
+
+\begin{align*}
+P\left(A=2\middle|\frac{A^2}{B}>4\right)
+\end{align*}
+
+\begin{align*}
+\left\{\frac{x^2}{y^3}\right\}
+\end{align*}
+
+\begin{align*}
+\frac{\mathrm d}{\mathrm d x} \big( k g(x) \big)
+\end{align*}
+
+\begin{align*}
+\begin{matrix}
+	a & b & c \\
+	d & e & f \\
+	g & h & i
+\end{matrix}
+\end{align*}
+
+\begin{align*} % \usepackage{mathtools}
+\begin{matrix}
+-1 & 3 \\
+2 & -4
+\end{matrix}
+=
+\begin{matrix*}[r]
+-1 & 3 \\
+2 & -4
+\end{matrix*}
+\end{align*}
+
+\begin{align*}
+\begin{array}{c|c}
+	1 & 2 \\ 
+	\hline
+	3 & 4
+\end{array}
+\end{align*}
+
+\begin{align*}
+M = \begin{bmatrix}
+\frac{5}{6} & \frac{1}{6} & 0           \\[0.3em]
+\frac{5}{6} & 0           & \frac{1}{6} \\[0.3em]
+0           & \frac{5}{6} & \frac{1}{6}
+\end{bmatrix}
+\end{align*}
+
+\begin{align*}
+M = \bordermatrix{~ & x & y \cr
+	A & 1 & 0 \cr
+	B & 0 & 1 \cr}
+\end{align*}
+
+\begin{align*}
+\chi^2=\sum{\dfrac{(O-E)^2}{E}}=\dfrac{(22-24)^2}{24}+\dfrac{(26-24)^2}{24}=\dfrac{1}{3}
+\end{align*}
+
+\begin{align*}
+\chi^2=\sum{\dfrac{(O-E)^2}{E}}=\dfrac{(24-31.1)^2}{31.1}+\dfrac{(22-14.9)^2}{14.9}+\dfrac{(76-68.9)^2}{68.9}+\dfrac{(26-33.1)^2}{33.1}=7.22
+\end{align*}
+
+\begin{align*}
+P(x)=\dfrac{N!}{x!(N-x)!}\pi^x(1-\pi)^{N-x}
+\end{align*}
+
+\begin{align*}
+f(x;\mu,\sigma^2)=\dfrac{1}{\sigma\sqrt{2\pi}}e^{-\dfrac{1}{2}(\dfrac{x-\mu}{\sigma})^2}
+\end{align*}
+
+\begin{align*}
+\bar{x}=\dfrac{(\sum{x})}{n}
+\end{align*}
+
+\begin{align*}
+\bar{x}=\dfrac{(\sum{x})}{n}
+\end{align*}
+
+\begin{align*}
+\text{skew}=\sum{\dfrac{(X-\mu)^3}{\sigma^3}}
+\end{align*}
+
+\begin{align*}
+\text{sum of squared errors (SS)}=\sum{(x_i-x_{\text{mean}})^2}=7366.625\text{kg}^2
+\end{align*}
+
+\begin{align*}
+\text{variance of the sample (SS/N)}=\dfrac{\sum{(x_i-x_{\text{mean}})^2}}{N}=736.66\text{kg}^2
+\end{align*}
+
+\begin{align*}
+\sigma=\sqrt{\dfrac{\sum{(x_i-\bar{x})^2}}{N\textcolor{red}{-1}}}
+\end{align*}
+
+\begin{align*}
+s^2=\dfrac{\sum{(x_i-\bar{x})^2}}{N}
+\end{align*}
+
+\begin{align*}
+t=\dfrac{|\bar{x}_{\text{sample}}-\bar{x}_{\text{population}}|}{s_{\bar{x}}}=\dfrac{4}{4.92}=0.81
+\end{align*}
+
+\begin{align*}
+s=\sqrt{\dfrac{(N_1-1)s_1^2+(N_2-1)s_2^2}{n_1+n_2-2}}
+\end{align*}
+
+\begin{align*}
+\text{SS}(T)=\displaystyle\sum{\left(x-\dfrac{\sum{x}}{N}\right)^2}=\displaystyle\sum{x^2-\dfrac{\left(\sum{x}\right)^2}{N}}
+\end{align*}
+
+\begin{align*}
+F=\dfrac{\text{betweenGroup variance}}{\text{withinGroup variance}}=\dfrac{\text{treatment variance}+\text{error variance}}{\text{withinGroup variance}}=\dfrac{\sigma^2_\text{between}}{\sigma^2_\text{within}}=\dfrac{s^2_\text{between}}{s^2_\text{within}}
+\end{align*}
+
+\begin{align*}
+\text{SS}_\text{between}=\displaystyle\sum{\left[\dfrac{\left(\sum{x_j}\right)^2}{n_j}\right]}-\dfrac{(\sum{x_{ij}})^2}{N}
+\end{align*}
+
+\begin{align*}
+\eta^2=\dfrac{\text{SS}_\text{between}}{\text{SS}_\text{total}} \\ f=\sqrt{\dfrac{\eta^2}{1-\eta^2}}
+\end{align*}
+
+\begin{align*}
+\int_{a}^{b} x^2 dx
+\end{align*}
+
+\begin{align*}
+sum_{n=1}^{\infty} 2^{-n} = 1
+\end{align*}
+
+\begin{align*}
+\prod_{i=a}^{b} f(i)
+\end{align*}
+
+\begin{align*}
+\lim_{x\to\infty} f(x)
+\end{align*}
+
+\begin{align*}
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+\end{align*}
+
+\begin{align*}
+\frac{1+\frac{a}{b}}{1+\frac{1}{1+\frac{1}{a}}}
+\end{align*}
+
+\begin{align*}
+a_0+\cfrac{1}{a_1+\cfrac{1}{a_2+\cfrac{1}{a_3+\cdots}}}
+\end{align*}
+
+\begin{align*}
+\begin{split}
+A & = \frac{\pi r^2}{2} \\
+& = \frac{1}{2} \pi r^2
+\end{split}
+\end{align*}
+
+\begin{align*} 
+2x - 5y &=  8 \\ 
+3x + 9y &=  -12
+\end{align*}
+
+\begin{align*} 
+x&=y           &  w &=z              &  a&=b+c\\
+2x&=-y         &  3w&=\frac{1}{2}z   &  a&=b\\
+-4 + 5x&=2+y   &  w+2&=-1+w          &  ab&=cb
+\end{align*}
+
+\begin{gather*} 
+2x - 5y =  8 \\ 
+3x^2 + 9y =  3a + c
+\end{gather*}
+
+\begin{align*}
+f(x) =& x^2\! +3x\! +2 \\
+f(x) =& x^2+3x+2 \\
+f(x) =& x^2\, +3x\, +2 \\
+f(x) =& x^2\: +3x\: +2 \\
+f(x) =& x^2\; +3x\; +2 \\
+f(x) =& x^2\ +3x\ +2 \\
+f(x) =& x^2\quad +3x\quad +2 \\
+f(x) =& x^2\qquad +3x\qquad +2
+\end{align*}
+
+\begin{align*}
+\Rightarrow\begin{pmatrix}a_{1,1}&a_{1,2}&a_{1,3}\\a_{2,1}&a_{2,2}&a_{2,3}\\a_{3,1}&a_{3,2}&a_{3,3}\end{pmatrix}\begin{pmatrix}b_{1,1}\\b_{2,1}\\b_{3,1}\end{pmatrix}=\begin{pmatrix}c_{1,1}=\begin{pmatrix}a_{1,1}&a_{1,2}&a_{1,3}\end{pmatrix}\begin{pmatrix}b_{1,1}\\b_{2,1}\\b_{3,1}\end{pmatrix}=a_{1,1}b_{1,1}+a_{1,2}b_{2,1}+a_{1,3}b_{3,1}\\c_{2,1}=a_{2,1}b_{1,1}+a_{2,2}b_{2,1}+a_{2,3}b_{3,1}\\c_{3,1}=a_{3,1}b_{1,1}+a_{3,2}b_{2,1}+a_{3,3}b_{3,1}\end{pmatrix}
+\end{align*}
+
+\begin{align*}
+A_{\textcolor{blue}{m} \times \textcolor{orange}{n}}*B_{\textcolor{orange}{n} \times \textcolor{green}{p}}=&C_{\textcolor{blue}{m} \times \textcolor{green}{p}} \\
+A_{\textcolor{blue}{3}\times\textcolor{orange}{3}}*B_{\textcolor{orange}{3}\times\textcolor{green}{1}}=&C_{\textcolor{blue}{3}\times\textcolor{green}{1}}
+\end{align*}
+
+\begin{align*}
+\textcolor{orange}{\begin{pmatrix}1&0&3\\0&1&4\\0&0&1\end{pmatrix}}\textcolor{orange}{\begin{pmatrix}2&0&0\\0&1&0\\0&0&1\end{pmatrix}}=&\begin{pmatrix}1*2+0*0+3*0&1*0+0*1+3*0&1*0+0*0+3*1\\0*2+1*0+4*0&0*0+1*1+4*0&0*0+1*0+4*1\\0*2+0*0+1*0&0*0+0*1+1*0&0*0+0*0+1*1\end{pmatrix} \\
+=&\textcolor{red}{\begin{pmatrix}2&0&3\\0&1&4\\0&0&1\end{pmatrix}}
+\end{align*}
+
+\begin{align*}
+\Rightarrow\begin{pmatrix}2&0&3\\0&1&4\\0&0&1\end{pmatrix}\textcolor{green}{\begin{pmatrix}0\\0\\1\end{pmatrix}_h}=\begin{pmatrix}2*\textcolor{green}0+0*\textcolor{green}0+3*\textcolor{green}1)\\0*\textcolor{green}0+1*\textcolor{green}0+4*\textcolor{green}1\\0*\textcolor{green}0+0*\textcolor{green}0+1*\textcolor{green}1\end{pmatrix}_h=\begin{pmatrix}3\\4\\1\end{pmatrix}_h=\begin{pmatrix}3\\4\end{pmatrix}\Leftrightarrow\textcolor{blue}{\begin{pmatrix}3\\4\end{pmatrix}}+\textcolor{blue}{\begin{pmatrix}0\\0\end{pmatrix}}
+\end{align*}
+
+\begin{align*}
+\begin{pmatrix}1&0&0\\sh_y&1&0\\0&0&1\end{pmatrix}\begin{pmatrix}x\\y\\1\end{pmatrix}_h=\begin{pmatrix}x\\sh_y*x+y\\1\end{pmatrix}_h
+\end{align*}
+
+\end{document}

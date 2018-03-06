@@ -8,16 +8,20 @@
 % Add packages to expand the functionality with the following command:
 % \usepackage[options]{packagename}
 % ==========================================================================
-\usepackage{bookmark}	% - Show all sections in the pdf as metadata
-\usepackage{hyperref}	% - For metada rendering in PDFs
-\usepackage{lastpage}	% - To get the toatal numbe rof pages
-\usepackage{fancyhdr}	% - For header and footer
-\usepackage{tocloft}	% - For table of contents
-\usepackage{xcolor}		% - Use colors
-\usepackage{graphicx}	% - Load/Display graphics
-\usepackage{hyperref}	% - Insert hyperlinks
-\usepackage{enumitem}	% - Needed for text lists
-\usepackage{listings}	% - Display source code
+\usepackage{bookmark}		% - Show all sections in the pdf as metadata
+\usepackage{hyperref}		% - For metada rendering in PDFs
+\usepackage{lastpage}		% - To get the toatal numbe rof pages
+\usepackage{fancyhdr}		% - For header and footer
+\usepackage{tocloft}		% - For table of contents
+\usepackage{xcolor}			% - Use colors
+\usepackage{graphicx}		% - Load/Display graphics
+\usepackage{hyperref}		% - Insert hyperlinks
+\usepackage{enumitem}		% - Needed for text lists
+\usepackage{listings}		% - Display source code
+\usepackage[english]{babel}	% - Umlauts (GERMAN PACKAGE: "ngerman")
+\usepackage[utf8]{inputenc}	% - Umlauts (Input encoding - understand "ä")
+\usepackage{lmodern}		% - Font encoding (find even "Hölleheiß" in PDF)
+\usepackage{titlesec}		% - Go deeper than a subsubsection
 % ==========================================================================
 
 % Variables
@@ -67,6 +71,41 @@
 \graphicspath{ {resources/} } % - Set directory which contains the images
 % ==========================================================================
 
+% Remove default indent
+% ==========================================================================
+%\setlength{\parindent}{0pt} % - Uncomment to remove all indents
+% ==========================================================================
+
+% Go deeper than a subsubsection (https://tex.stackexchange.com/a/60212)
+% ==========================================================================
+\titleclass{\subsubsubsection}{straight}[\subsection]
+\newcounter{subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection.\arabic{subsubsubsection}}
+\renewcommand\theparagraph{\thesubsubsubsection.\arabic{paragraph}} % optional; useful if paragraphs are to be numbered
+\titleformat{\subsubsubsection}
+{\normalfont\normalsize\bfseries}{\thesubsubsubsection}{1em}{}
+\titlespacing*{\subsubsubsection}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+	{3.25ex \@plus1ex \@minus.2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+	{3.25ex \@plus1ex \@minus .2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@paragraph{6}
+\def\l@subsubsubsection{\@dottedtocline{4}{7em}{4em}}
+\def\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\def\l@subparagraph{\@dottedtocline{6}{14em}{6em}}
+\makeatother
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+% ==========================================================================
+
 
 % Document content begin
 \begin{document}\thispagestyle{empty}
@@ -92,7 +131,7 @@ Short summary of the document aka abstract.
 % Document section
 \section{Introduction}
 
-Einführung...
+Text...
 
 % Document section
 \section{Section}
@@ -101,6 +140,23 @@ Einführung...
 \subsection{Subsection}
 
 Text...
+
+\paragraph{Paragraph}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing diam donec adipiscing tristique risus nec feugiat.
+
+New sentences that have a insertion on the right. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+\newline
+To not have this insertion/indent you need the command \verb|\newline|
+\\
+or \verb|\\| in the empty line.
+
+To not have this insertion/indent you can also ban the indents globally by adding the line \verb|\setlength{\parindent}{0pt}|.
+
+\vspace{5mm} %5mm vertical space
+
+To get some space between texts use something like \verb|\vspace{5mm}| to get 5mm horizontal space.
+
 
 % Document section
 \subsection{Another subsection}
@@ -111,158 +167,13 @@ Text...
 
 Text...
 
-\section{Lists}
+\subsubsubsection{Subsubsubsection}
 
-\subsection{Unordered}
+Text...
 
-\paragraph{Simple list:}
+\paragraph{Paragraph}
 
-\begin{itemize}
-	\item One entry in the list
-	\item Another entry in the list
-\end{itemize}
-
-\paragraph{Nested list:}
-
-\begin{itemize}
-	\item  First Level
-	\begin{itemize}
-		\item  Second Level
-		\begin{itemize}
-			\item  Third Level
-			\begin{itemize}
-				\item  Fourth Level
-			\end{itemize}
-		\end{itemize}
-	\end{itemize}
-\end{itemize}
-
-\subsection{Ordered}
-
-\paragraph{Simple list:}
-
-\begin{enumerate}
-	\item One entry in the list
-	\item Another entry in the list
-\end{enumerate}
-
-\paragraph{Nested list:}
-
-\begin{enumerate}
-	%\renewcommand{\labelenumii}{\Roman{enumii}} % - Make ii roman number
-	%\renewcommand{\labelenumii}{\{enumii}} % - Make ii roman number
-	\item First level item
-	\item First level item
-	\begin{enumerate}
-		\setcounter{enumii}{4} % - Begin at 5 (e)
-		\item Second level item
-		\item Second level item
-		\begin{enumerate}
-			\setcounter{enumiii}{1} % - Begin at 2 (ii)
-			\item Third level item
-			\item Third level item
-			\begin{enumerate}
-				\setcounter{enumiv}{9} % - Begin at 10 (J)
-				\item Fourth level item
-				\item Fourth level item
-			\end{enumerate}
-		\end{enumerate}
-	\end{enumerate}
-\end{enumerate}
-
-\subsection{Text list}
-
-\begin{description}[align=left]
-	\item [One] More text
-	\item [Two] More text
-\end{description}
-
-\begin{lstlisting}[language=tex,frame=single]
-\begin{description}[align=left]
-	\item [One] More text
-	\item [Two] More text
-\end{description}
-\end{lstlisting}
-
-\begin{description}[align=right]
-	\item [One right] More text
-	\item [Two right] More text
-\end{description}
-
-\begin{lstlisting}[language=tex,frame=single]
-\begin{description}[align=right]
-	\item [One] More text
-	\item [Two] More text
-\end{description}
-\end{lstlisting}
-
-\begin{description}[align=right,labelwidth=3cm]
-	\item [One right] More text
-	\item [Two right] More text
-\end{description}
-
-\begin{lstlisting}[language=tex,frame=single]
-\begin{description}[align=right,labelwidth=3cm]
-	\item [One] More text
-	\item [Two] More text
-\end{description}
-\end{lstlisting}
-
-\subsubsection{Combine them}
-
-\begin{enumerate}
-	\item The labels consists of sequential numbers.
-	\begin{itemize}
-		\item The individual entries are indicated with a black dot, a so-called bullet.
-		\item The text in the entries may be of any length.
-	\end{itemize}
-	\item The numbers starts at 1 with every call to the enumerate environment.
-	\begin{itemize}
-		\item The individual entries are indicated with a black dot, a so-called bullet.
-		\begin{itemize}
-			\item The individual entries are indicated with a black dot, a so-called bullet.
-			\begin{itemize}
-				\item The individual entries are indicated with a black dot, a so-called bullet.
-			\end{itemize}
-		\end{itemize}
-	\end{itemize}
-\end{enumerate}
-
-\subsubsection{Subsubsection}
-A normal sentence.
-
-A new sentence with insertion.
-\newline
-Thanks to the \verb|\newline| command this insertions goes away.\\
-To block concatenating on the next line you use \verb|\\| at the end of the line.
-
-\section{Equations}
-
-Inside of text you can use the inline formatting to show equations or symbols by inserting it inside two  \verb|$| symbols like this: $E=mc^2$ (\verb|$E=mc^2$|).
-
-\vspace{5mm} %5mm vertical space
-
-Or show big equations like this (\verb|$$E=mc^2$$|):
-
-$$x^n+y^n=z^n$$
-
-Or show big equations like this:
-
-\begin{equation}
-\label{simple_equation}
-\alpha = \sqrt{ \beta }
-\end{equation}
-
-
-\begin{figure}
-    \centering
-%    \includegraphics[width=3.0in]{myfigure}
-    \caption{Simulation Results}
-    \label{simulationfigure}
-\end{figure}
-
-% Create a new page
-\newpage
+Text...
 
 \section{Text formatting}
 \label{sec:exampleAnchor}
@@ -326,6 +237,153 @@ Or show big equations like this:
 	\item \url{https://www.wikibooks.org} (\verb|\url{https://...}|)
 	\item \href{https://www.wikibooks.org}{Wikibooks home} (\verb|\href{https://...}{...}|)
 \end{itemize}
+
+\section{Lists}
+
+\subsection{Unordered}
+
+\paragraph{Simple list:}
+
+\begin{itemize}
+	\item One entry in the list
+	\item Another entry in the list
+\end{itemize}
+
+\paragraph{Nested list:}
+
+\begin{itemize}
+	\item  First Level
+	\begin{itemize}
+		\item  Second Level
+		\begin{itemize}
+			\item  Third Level
+			\begin{itemize}
+				\item  Fourth Level
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsection{Ordered}
+
+\paragraph{Simple list:}
+
+\begin{enumerate}
+	\item One entry in the list
+	\item Another entry in the list
+\end{enumerate}
+
+\paragraph{Nested list:}
+
+\begin{enumerate}
+	%\renewcommand{\labelenumii}{\Roman{enumii}} % - Make ii roman number
+	%\renewcommand{\labelenumii}{\{enumii}} % - Make ii roman number
+	\item First level item
+	\item First level item
+	\begin{enumerate}
+		\setcounter{enumii}{4} % - Begin at 5 (e)
+		\item Second level item
+		\item Second level item
+		\begin{enumerate}
+			\setcounter{enumiii}{1} % - Begin at 2 (ii)
+			\item Third level item
+			\item Third level item
+			\begin{enumerate}
+				\setcounter{enumiv}{9} % - Begin at 10 (J)
+				\item Fourth level item
+				\item Fourth level item
+			\end{enumerate}
+		\end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+
+\subsection{Text list}
+
+\begin{description}[align=left]
+	\item [One left] More text
+	\item [Two left] More text
+\end{description}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{description}[align=left]
+	\item [One left] More text
+	\item [Two left] More text
+\end{description}
+\end{lstlisting}
+
+\begin{description}[align=right,labelwidth=6cm]
+	\item [One right + labelwidth] More text
+	\item [Two right + labelwidth] More text
+\end{description}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{description}[align=right,labelwidth=3cm]
+	\item [One right + labelwidth] More text
+	\item [Two right + labelwidth] More text
+\end{description}
+\end{lstlisting}
+
+\subsubsection{Combine them}
+
+\begin{enumerate}
+	\item The labels consists of sequential numbers. Hallöchenßß
+	\begin{itemize}
+		\item The individual entries are indicated with a black dot, a so-called bullet.
+		\item The text in the entries may be of any length.
+	\end{itemize}
+	\item The numbers starts at 1 with every call to the enumerate environment.
+	\begin{itemize}
+		\item The individual entries are indicated with a black dot, a so-called bullet.
+		\begin{itemize}
+			\item The individual entries are indicated with a black dot, a so-called bullet.
+			\begin{itemize}
+				\item The individual entries are indicated with a black dot, a so-called bullet.
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{enumerate}
+
+\subsubsection{Subsubsection}
+
+
+\section{Equations}
+
+Inside of text you can use the inline formatting to show equations or symbols by inserting it inside two \verb|$| symbols like this: $E=mc^2$ (\verb|$E=mc^2$|).
+
+\vspace{5mm} %5mm vertical space
+
+Also in this document we can define something by using the two \verb|$| symbols instead of one and writing the point of the sentence at the end of the formula (\verb|$$E=mc^2.$$|)  $$E=mc^2.$$
+
+\vspace{5mm} %5mm vertical space
+
+There is also the option to show big equations with this (\verb|$$E=mc^2$$|):
+
+$$x^n+y^n=z^n$$
+
+But the better way is this:
+
+\begin{equation}
+\label{simple_equation}
+\alpha = \sqrt{ \beta }
+\end{equation}
+
+\begin{equation}
+\label{simple_equation}
+\alpha = \sqrt{ \beta }
+\end{equation}
+
+
+\begin{figure}
+    \centering
+%    \includegraphics[width=3.0in]{myfigure}
+    \caption{Simulation Results}
+    \label{simulationfigure}
+\end{figure}
+
+% Create a new page
+\newpage
+
+
 
 \section{Embed content}
 

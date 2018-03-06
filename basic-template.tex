@@ -1,6 +1,7 @@
 % Document type/layout
 % ==========================================================================
 \documentclass{article}				% -> Article layout (default)
+%\documentclass{scrartcl}			% -> Modern/Bigger article layout (recommended)
 %\documentclass[journal]{IEEEtran}	% -> Two column journal layout
 %\documentclass{report}				% -> Report layout
 % ==========================================================================
@@ -22,8 +23,10 @@
 \usepackage[utf8]{inputenc}	% - Umlauts (Input encoding - understand "ä")
 \usepackage{lmodern}		% - Font encoding (find even "Hölleheiß" in PDF)
 \usepackage{titlesec}		% - Go deeper than a subsubsection
-\usepackage{dcolumn}		% - FOr decimal sorting in tables
+\usepackage{dcolumn}		% - For decimal sorting in tables
 \usepackage{multirow}		% - Needed for some tables
+\usepackage{verbatim}		% - Use multi line comments
+\usepackage{enumitem}		% - Define differnt list labels fast/simple
 % ==========================================================================
 
 % Variables
@@ -58,7 +61,7 @@
 \pagestyle{fancy}		% - Style of header/footer	
 \lhead{Left header} % - Left header text
 \chead{Center header} % - Center header text
-\rhead{Right header} % - Right header text
+\rhead{Right header\\Two lines} % - Right header text
 % -------------------------------------------------------------------------
 \lfoot{Left footer} % - Left footer text
 \cfoot{Center footer - Page number \thepage} % - Center footer text
@@ -73,9 +76,11 @@
 \graphicspath{ {resources/} } % - Set directory which contains the images
 % ==========================================================================
 
-% Remove default indent
+% Indent + Area before a new paragraph
 % ==========================================================================
-%\setlength{\parindent}{0pt} % - Uncomment to remove all indents
+%\setlength{\parindent}{0pt}	% - Uncomment to remove all indents
+%\setlength{\parindent}{10ex}	% - Uncomment to set a new indent length
+%\setlength{\parskip}{1em}		% - Uncomment to set a custom length before each paragraph
 % ==========================================================================
 
 % Go deeper than a subsubsection (https://tex.stackexchange.com/a/60212)
@@ -345,6 +350,82 @@ Text...
 	\end{itemize}
 \end{enumerate}
 
+\subsubsection{Format lists}
+
+\begin{enumerate}[label=\Alph*]
+	\item this is item A
+	\item another item B
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\Alph*]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label=\Alph*.]
+	\item this is item A.
+	\item another item B.
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\Alph*.]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label=\arabic*]
+	\item this is item 1
+	\item another item 2
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\arabic*]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label=\roman*]
+	\item this is item i
+	\item another item ii
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\roman*]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label=\Roman*]
+	\item this is item i
+	\item another item ii
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\Roman*]...\end{enumerate}
+\end{lstlisting}
+
+
+\begin{enumerate}[label=\arabic*.]
+	\item this is item 1.
+	\item another item 2.
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=\arabic*.]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label=Hi \Alph*)]
+	\item this is item "Hi A)"
+	\item another item "Hi B)"
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label=Hi \Alph*)]...\end{enumerate}
+\end{lstlisting}
+
+\begin{enumerate}[label={[}\arabic*{]}]
+	\item this is item [1]
+	\item another item [2]
+\end{enumerate}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{enumerate}[label={[}\arabic*{]}]...\end{enumerate}
+\end{lstlisting}
+
+
 \section{Equations}
 
 Inside of text you can use the inline formatting to show equations or symbols by inserting it inside two \verb|$| symbols like this: $E=mc^2$ (\verb|$E=mc^2$|).
@@ -366,10 +447,7 @@ But the better way is this:
 \alpha = \sqrt{ \beta }
 \end{equation}
 
-\begin{equation}
-\label{simple_equation}
-\alpha = \sqrt{ \beta }
-\end{equation}
+To find out more about the math stuff look up the \textbf{advanced-equations.md} file.
 
 % Create a new page
 \newpage
@@ -522,6 +600,103 @@ But the better way is this:
 	\caption{PDF file page}
 	\label{fig:pdfFile}
 \end{figure}
+
+\section{Align content}
+
+\subsection{Center}
+
+\begin{center}
+	Hello, here is some text without a meaning.  This text should show what 
+	a printed text will look like at this place.  If you read this text, 
+	you will get no information.  Really?  Is there no information?  Is there 
+	a difference between this text and some nonsense like not at all!
+\end{center}
+
+\subsection{Left}
+
+\begin{flushleft}
+	Hello, here is some text without a meaning.  This text should show what 
+	a printed text will look like at this place.  If you read this text, 
+	you will get no information.  Really?  Is there no information?  Is there 
+	a difference between this text and some nonsense like not at all!
+\end{flushleft}
+
+\subsection{Right}
+
+\begin{flushright}
+	Hello, here is some text without a meaning.  This text should show what 
+	a printed text will look like at this place.  If you read this text, 
+	you will get no information.  Really?  Is there no information?  Is there 
+	a difference between this text and some nonsense like not at all!
+\end{flushright}
+
+\subsection{Custom indent}
+
+This is the text in first paragraph. This is the text in first 
+paragraph. This is the text in first paragraph.
+
+\noindent %The next paragraph is not indented
+This is the text in second paragraph. This paragraph has no indent because of the command \verb|\noindent|.
+
+This is the text in third paragraph. This paragraph has an indent per default.
+\par You can even force a new paragraph with the command \verb|\par| at the begin of the new paragraph without leaving a whole line empty between the paragraphs.
+\par\noindent
+Or use them both in combination
+
+\section{Comments}
+
+\subsection{One line comment}
+
+% This is a one line comment which will not be rendered.
+
+\begin{lstlisting}[language=tex,frame=single]
+% This is a one line comment which will not be rendered.
+\end{lstlisting}
+
+\subsection{Mult line comment}
+
+\begin{comment} % requiers the package "verbatim"
+This is a comment which will not be rendered.
+This too.
+This three.
+\end{comment}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{comment}
+	This is a comment which will not be rendered.
+	This too.
+	This three.
+\end{comment}
+\end{lstlisting}
+
+\section{References}
+
+\subsection{Image}
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata \ref{fig:example-pic} sanctus est Lorem ipsum dolor sit amet.
+
+% Bildumgebung
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{example-resource-pdf-file.pdf}
+	\caption{Example picture}
+	\label{fig:example-pic}
+\end{figure}
+
+\subsection{Table}
+
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores \ref{tab:example-table} et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\begin{table}[!h]	
+	\centering
+	\begin{tabular}{c|r l}	 
+		Uno 1 & $12$ & $\pm 1$ \\   \hline	 
+		Dos 2a & $42$ & $\pm 3$ \\	 
+		Tres 2b & $42$ & $\pm 2$ 	
+	\end{tabular}	
+	\caption{Example table}	
+	\label{tab:example-table}
+\end{table}
+
 
 \vfill
 

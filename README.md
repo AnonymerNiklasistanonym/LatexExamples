@@ -17,6 +17,12 @@ miktex-pdflatex latexFile.tex
 
 Or open TeXstudio and press F5 after creating a new file to directly compile and view it.
 
+# Compile in TeXstudio
+
+Open a file or create one and then press the green `Build and view` button in the menu bar or simply press `F5` to directly view the compiled PDF document.
+
+With one additional click you can even open it instantly with an external PDF viewer. And if you only want to compile it just press `F6` instead of `F5`.
+
 ## Configure TeXstudio
 
 ### Change the language

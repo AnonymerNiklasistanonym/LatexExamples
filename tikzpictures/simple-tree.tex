@@ -1,0 +1,34 @@
+\documentclass{article}
+
+
+% A simple Tree
+% Author: Stefan Kottwitz
+% https://www.packtpub.com/hardware-and-creative/latex-cookbook
+
+
+% Things to import:
+\usepackage{tikz}
+
+
+\begin{document}
+% Used to export it as an image too: (Sourcecode is from here: https://tex.stackexchange.com/a/299008)
+\hoffset=-1in\voffset=-1in\setbox0\hbox{
+
+
+
+\begin{tikzpicture}[sibling distance=10em,
+every node/.style = {shape=rectangle, rounded corners,
+	draw, align=center,
+	top color=white, bottom color=blue!20}]]
+\node {Formulas}
+child { node {single-line} }
+child { node {multi-line}
+	child { node {aligned at}
+		child { node {relation sign} }
+		child { node {several places} }
+		child { node {center} } }
+	child { node {first left,\\centered,\\last right} } };
+\end{tikzpicture}
+
+
+}\pdfpageheight=\dimexpr\ht0+\dp0\relax\pdfpagewidth=\wd0\shipout\box0\stop

@@ -30,3 +30,23 @@ With one additional click you can even open it instantly with an external PDF vi
 To change the language of the editor (for example you want to edit a german instead of an english one).
 
 You just click in the menu bar `Options`, then `Configure TeXstudio` and then select `Language Checking`. There you can change in the section `Default Language` the language to your desired language.
+
+## Links
+
+- (introduction) [ShareLaTeX Documentation](https://www.sharelatex.com/learn/Main_Page)
+- (advanced) [TikZ package](https://www.sharelatex.com/learn/TikZ_package)
+- (advanced) [TikZ preview website](http://www.tlhiv.org/ltxpreview/)
+
+## How to create simple automatas
+
+### 1. Step - Create one
+
+Create with this website simple and fast your automata: http://madebyevan.com/fsm/
+Then download the automatas created LaTeX code.
+
+### 2. Step - Export/Edit or optimize
+
+On this website you can now edit special characters or more (you can also do this in TeXstudio, but I prefer it this way: http://www.tlhiv.org/ltxpreview/
+(don't forget to add the needed packages!)
+
+Now you can copy the code and import it directly into your LaTeX document - or you can download it as a vector graphic if you want.

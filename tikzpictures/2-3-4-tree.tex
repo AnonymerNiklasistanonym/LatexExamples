@@ -1,0 +1,56 @@
+\documentclass{article}
+
+
+% Things to import:
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzset{
+	treenode/.style = {align=center, inner sep=0pt, text centered, font=\sffamily},
+	arn_n/.style = {treenode, circle, white, font=\sffamily\bfseries, draw=black, fill=black, text width=1.5em},
+	arn_r/.style = {treenode, circle, red, draw=red, text width=1.5em, very thick},
+	arn_x/.style = {treenode, rectangle, draw=black, minimum width=0.5em, minimum height=0.5em}
+}
+
+
+\begin{document}
+% Used to export it as an image too: (Sourcecode is from here: https://tex.stackexchange.com/a/299008)
+\hoffset=-1in\voffset=-1in\setbox0\hbox{
+
+\begin{tikzpicture}
+[>=stealth',level/.style={sibling distance = 5cm/#1, level distance = 1.5cm}]
+
+\node [arn_n] {51}
+child{ node [arn_r] {44}
+	child{ node [arn_n] {42}
+		child{ node [arn_r] {39}}
+		child{ node [arn_r] {43}}
+	}
+	child{ node [arn_n] {46}
+		child{ node [arn_r] {45}}
+		child{ node [arn_r] {49}}
+	}
+}
+child{ node [arn_r] {64}
+	child{ node [arn_n] {62}
+		child{ node [arn_r] {57}
+			child{ node [draw=none] {}edge from parent[draw=none]}
+			child{ node [arn_n] {60}}
+		}
+		child{ node [arn_r] {63}}
+	}
+	child{ node [arn_n] {75}
+		child{ node [arn_r] {90}
+			child{ node [arn_n] {87}}
+			child{ node [arn_n] {91}
+				child{ node [draw=none] {}edge from parent[draw=none]}
+				child{ node [arn_r] {98}}
+			}
+		}
+		child{ node [arn_r] {71}}
+	}
+}
+;
+\end{tikzpicture}
+
+
+}\pdfpageheight=\dimexpr\ht0+\dp0\relax\pdfpagewidth=\wd0\shipout\box0\stop

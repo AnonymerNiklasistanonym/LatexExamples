@@ -13,6 +13,11 @@
 \usepackage{lastpage}	% - To get the toatal numbe rof pages
 \usepackage{fancyhdr}	% - For header and footer
 \usepackage{tocloft}	% - For table of contents
+\usepackage{xcolor}		% - Use colors
+\usepackage{graphicx}	% - Load/Display graphics
+\usepackage{hyperref}	% - Insert hyperlinks
+\usepackage{enumitem}	% - Needed for text lists
+\usepackage{listings}	% - Display source code
 % ==========================================================================
 
 % Variables
@@ -24,6 +29,10 @@
 % \newcommand*{\myauthor}{\texorpdfstring{\myauthorOne, \myauthorTwo}{\myauthorOne;\myauthorTwo}} % - Document authors (many authors)
 \newcommand*{\mysubject}{The subject}			% - Document subject
 \newcommand*{\mydate}{\normalsize 03.09.2018}	% - Document release date
+% -------------------------------------------------------------------------
+\definecolor{color-name}{HTML}{FF7F00}
+\definecolor{orange}{RGB}{255,127,0}
+\definecolor{orange}{HTML}{FF7F00}
 % ==========================================================================
 
 % Document data
@@ -53,6 +62,11 @@
 \renewcommand{\footrulewidth}{0.4pt} % - Black line over footer text
 % ==========================================================================
 
+% Image resources
+% ==========================================================================
+\graphicspath{ {resources/} } % - Set directory which contains the images
+% ==========================================================================
+
 
 % Document content begin
 \begin{document}\thispagestyle{empty}
@@ -78,12 +92,7 @@ Short summary of the document aka abstract.
 % Document section
 \section{Introduction}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+Einführung...
 
 % Document section
 \section{Section}
@@ -91,32 +100,29 @@ culpa qui officia deserunt mollit anim id est laborum.
 % Document section
 \subsection{Subsection}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+Text...
 
 % Document section
 \subsection{Another subsection}
 
+Text...
+
 \subsubsection{Subsubsection}
 
-test
+Text...
 
-\subsection{Lists}
+\section{Lists}
 
-\subsubsection{Unordered}
+\subsection{Unordered}
 
-Simple list:
+\paragraph{Simple list:}
 
 \begin{itemize}
 	\item One entry in the list
 	\item Another entry in the list
 \end{itemize}
 
-Nested list:
+\paragraph{Nested list:}
 
 \begin{itemize}
 	\item  First Level
@@ -131,35 +137,76 @@ Nested list:
 	\end{itemize}
 \end{itemize}
 
-\subsubsection{Ordered}
+\subsection{Ordered}
 
-Simple list:
+\paragraph{Simple list:}
 
 \begin{enumerate}
 	\item One entry in the list
 	\item Another entry in the list
 \end{enumerate}
 
-Nested list:
+\paragraph{Nested list:}
 
-\renewcommand{\labelenumii}{\Roman{enumii}}
 \begin{enumerate}
+	%\renewcommand{\labelenumii}{\Roman{enumii}} % - Make ii roman number
+	%\renewcommand{\labelenumii}{\{enumii}} % - Make ii roman number
 	\item First level item
 	\item First level item
 	\begin{enumerate}
-		\setcounter{enumii}{4}
+		\setcounter{enumii}{4} % - Begin at 5 (e)
 		\item Second level item
 		\item Second level item
 		\begin{enumerate}
+			\setcounter{enumiii}{1} % - Begin at 2 (ii)
 			\item Third level item
 			\item Third level item
 			\begin{enumerate}
+				\setcounter{enumiv}{9} % - Begin at 10 (J)
 				\item Fourth level item
 				\item Fourth level item
 			\end{enumerate}
 		\end{enumerate}
 	\end{enumerate}
 \end{enumerate}
+
+\subsection{Text list}
+
+\begin{description}[align=left]
+	\item [One] More text
+	\item [Two] More text
+\end{description}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{description}[align=left]
+	\item [One] More text
+	\item [Two] More text
+\end{description}
+\end{lstlisting}
+
+\begin{description}[align=right]
+	\item [One right] More text
+	\item [Two right] More text
+\end{description}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{description}[align=right]
+	\item [One] More text
+	\item [Two] More text
+\end{description}
+\end{lstlisting}
+
+\begin{description}[align=right,labelwidth=3cm]
+	\item [One right] More text
+	\item [Two right] More text
+\end{description}
+
+\begin{lstlisting}[language=tex,frame=single]
+\begin{description}[align=right,labelwidth=3cm]
+	\item [One] More text
+	\item [Two] More text
+\end{description}
+\end{lstlisting}
 
 \subsubsection{Combine them}
 
@@ -217,21 +264,114 @@ Or show big equations like this:
 % Create a new page
 \newpage
 
-\section{Conclusion}
+\section{Text formatting}
+\label{sec:exampleAnchor}
 
-\subsection{Conclusion 2}
+\subsection{Text types}
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-fugiat nulla pariatur.
+\begin{itemize}
+	\item \textbf{Bold text} (\verb|\textbf{...}|)
+	\item \underline{Underline text} (\verb|\underline{...}|)
+	\item \textit{Italic text} (\verb|\textit{...}|)
+	\item \textbf{\textit{\underline{Combine them}}} (\verb|\textbf{\textit{\underline{...}|)
+	\item Normal text
+	\item \textsl{Slanted style text} (\verb|\textsl{...}|)
+	\item \textsc{Small caps style text} (\verb|\textsc{...}|)
+	\item \MakeUppercase{uppeRcase text} (\verb|\MakeUppercase{...}|)
+	\item \MakeLowercase{LOWERcASE tExT} (\verb|\MakeLowercase{...}|)
+\end{itemize}
+
+\subsection{Text color}
+
+\begin{itemize}
+	\item \textcolor{color-name}{Declared color text} (\verb|\textcolor{color-name}{...}|)
+	\item \textcolor{red}{Red text} (\verb|\textcolor{red}{...}|)
+	\item \textcolor{green}{Green text} (\verb|\textcolor{green}{...}|)
+	\item \colorbox{black}{\color{white}{White text on black}} (\verb|\colorbox{black}{\color{white}{...}|)
+	\item \fcolorbox{black}{yellow}{Text in black frame with yellow background} (\verb|\fcolorbox{black}{yellow}{...}|)
+	\item \fcolorbox{red}{red}{\colorbox{cyan}{\color{white}{Ultimate combo}}} (\verb|\fcolorbox{red}{red}{\colorbox{cyan}{\color{white}{...}|)
+\end{itemize}
+
+\subsection{Text sizes}
+
+\begin{itemize}
+	\item {\tiny Tiny text} (\verb|{\tiny ...}|)
+	\item {\scriptsize Scriptsize text} (\verb|{\scriptsize ...}|)
+	\item {\footnotesize Footnotesize text} (\verb|{\footnotesize ...}|)
+	\item {\small Small text} (\verb|{\small ...}|)
+	\item {\normalsize Normalsize text} (\verb|{\normalsize ...}|)
+	\item Normal text
+	\item {\large large text} (\verb|{\large ...}|)
+	\item {\Large Large text} (\verb|{\Large ...}|)
+	\item {\LARGE LARGE text} (\verb|{\LARGE ...}|)
+	\item {\huge huge text} (\verb|{\huge ...}|)
+	\item {\Huge Huge text} (\verb|{\Huge ...}|)
+\end{itemize}
+
+\subsection{Text font}
+
+\begin{itemize}
+	\item Normal text
+	\item \textrm{Serif (roman) text} (\verb|\textrm{...}|)
+	\item \textsf{Sans serif text} (\verb|\textsf{...}|)
+	\item \texttt{Typewriter (monospace) text} (\verb|\texttt{...}|)
+\end{itemize}
+
+\subsection{Text links}
+
+\begin{itemize}
+	\item \hyperref[sec:exampleAnchor]{Anchor link to a section}, Page number of reference: \pageref{sec:exampleAnchor} \\(\verb|\label{sec:...},\hyperref[sec:...]{...},\pageref{sec:...}|)
+	\item \hyperref[fig:pixelGraphic]{Anchor link to a figure}, Page number of reference: \pageref{fig:pixelGraphic} \\(\verb|\label{fig:...},\hyperref[fig:...]{...},\pageref{fig:...}|)
+	\item Reference\cite{source01,source02} (\verb|\cite{...}|)
+	\item \url{https://www.wikibooks.org} (\verb|\url{https://...}|)
+	\item \href{https://www.wikibooks.org}{Wikibooks home} (\verb|\href{https://...}{...}|)
+\end{itemize}
+
+\section{Embed content}
+
+\subsection{Text/Code files}
+
+\subsection{Image files}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{example-resource-pixel-graphic.png}
+	\caption{Pixel graphic}
+	\label{fig:pixelGraphic}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\textwidth]{example-resource-pdf-file.pdf}
+	\caption{PDF file page}
+	\label{fig:pdfFile}
+\end{figure}
 
 \vfill
 
 \section{Heading at the end of the page}
 
 Thanks to the command \verb|\vfill| a new vertical space will be created and push this section as low as it can get.
+
+\newpage
+
+\begin{thebibliography}{3} % - Number of entries to be added -> cannot be higher than 99
+	
+	\bibitem{source01}
+	Author One, Author Two.
+	\textit{The document}. 
+	University, Place, State/Country, Year.
+	
+	\bibitem{source02} 
+	Author One, Author Two.
+	\textit{The document}. 
+	University, Place, State/Country, Year.
+	
+	\bibitem{source03}
+	Author: \textit{The thing}. 
+	\\\url{https://www.wikibooks.org}
+	
+\end{thebibliography}
 
 % Document end
 \end{document}

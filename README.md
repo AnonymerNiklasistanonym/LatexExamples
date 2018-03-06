@@ -53,4 +53,6 @@ On this website you can now edit special characters or more (you can also do thi
 
 Now you can copy the code and import it directly into your LaTeX document - or you can download it as a vector graphic if you want.
 
-### Error handling: If the website ever would not work any more or you want to do it offline you can use the backup in the directory [`automatas`](automatas).
+### Error handling:
+
+If the website ever would not work any more or you want to do it offline you can use the backup in the directory [`automatas`](automatas).

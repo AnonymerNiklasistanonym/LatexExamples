@@ -41,7 +41,7 @@ You just click in the menu bar `Options`, then `Configure TeXstudio` and then se
 
 ### 1. Step - Create one
 
-Create with this website simple and fast your automata: http://madebyevan.com/fsm/ (It's also even open source here on GitHub: https://github.com/evanw/fsm).
+Create with this website simple and fast your automata: http://madebyevan.com/fsm/ (it's even [here on GitHub](https://github.com/evanw/fsm)).
 
 Then download the automatically created LaTeX code of this automata.
 
@@ -52,3 +52,5 @@ On this website you can now edit special characters or more (you can also do thi
 *(don't forget to add the needed packages!)*
 
 Now you can copy the code and import it directly into your LaTeX document - or you can download it as a vector graphic if you want.
+
+### Error handling: If the website ever would not work any more or you want to do it offline you can use the backup in the directory [`automata`](automata/).

@@ -1,0 +1,84 @@
+% This document was created while following the amzaing LaTeX beginner tutorial (https://www.youtube.com/playlist?list=PL542920k_cOoSTC23aG3jhczwHtrRKb9q) of the YouTube channel DorFuchs (https://www.youtube.com/channel/UC97dp7op_ZjSCNp3DRLGymQ)
+
+\documentclass{article}
+
+
+% packages to import:
+\usepackage[ngerman]{babel} % Language package for usign for example umlauts
+\usepackage[utf8]{inputenc} % Input encoding - rendering of for example umlauts
+\usepackage[T1]{fontenc} % Font encoding to find later words with for example umlauts
+\usepackage{amsmath} % Use advanced math in \begin{align}\end{align} sections
+\usepackage{amssymb} % Use math symbols like the symbol for the real numbers
+\usepackage{amsthm} % Create your own sections and use for example a proof section
+
+
+% create a section named satz
+\newtheorem{satz}{Satz}
+
+% create custom commands ([#] is the number of arguments)
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\vektor}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+% remove indent
+\setlength{\parindent}{0px}
+
+
+\begin{document}
+	
+
+\title{Testdokument}
+\author{DorFuchs}
+\maketitle
+	
+
+% add table of contents to the document
+\tableofcontents
+
+% show text on the next side
+\newpage
+
+
+\section{Satz des Pythagoras}
+	
+\begin{satz}
+	In einem rechtwinkligen Dreieck mit Katheten $a$ und $b$ und Hyphotenuse $c$ gilt
+	\[ a^2 + b^2 = c^2 . \]
+\end{satz}
+\begin{proof}
+	... \\
+	... \\
+	...
+\end{proof}
+
+
+\section{p-q-Formel}
+
+Für die Gleichung $x^2 + px + q = 0$, wobei $p, q \in \mathbb{R}$ mit $\frac{p}{2}^2 - q > 0$, lautet die Lösungsformel
+\begin{align}
+	x &= \frac{p}{2} \pm \sqrt{ \left( \frac{p}{2} \right)^2 - q} \\
+	&= - \frac{p}{2} \pm \sqrt{\frac{p^2}{4} - q}
+\end{align}
+
+
+\section{Euklidische Geometrie}
+
+\subsection{Matrizen}
+
+\begin{satz}
+	Die Einheitsmatrix im $\R^3$ lautet
+	\[ \begin{pmatrix}
+	1 & 0 & 0 \\
+	0 & 1 & 0 \\
+	0 & 0 & 1
+	\end{pmatrix} . \]
+\end{satz}
+
+\subsection{Vektoren}
+
+\begin{satz}
+	Der Betrag eines Vektors ist im $\R^3$ ist definiert durch
+	\[ \left| \vektor{x\\y\\z} \right| = \sqrt{x^2 + y^2 + z^2} . \]
+\end{satz}
+
+
+\end{document}

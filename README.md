@@ -4,18 +4,18 @@ This repository contains Latex example scripts and a tutorial of how to compile 
 
 ## Setup on Windows
 
-To compile and edit them without too much pain you need to install the folowing two programs:
+To compile and edit them without too much pain you need to install the following two programs:
 
 - [TeXstudio](https://www.texstudio.org/)
-- [MiKTeX](https://miktex.org/download) (while the installation set `always`for the option to *install packages on the fly*)
+- [MiKTeX](https://miktex.org/download) (while the installation set `always` for the option to *install packages on the fly*)
 
-Then you can for once compile any LaTeX file via command line:
+Then you can for once compile any $\LaTeX$ file via command line:
 
 ```bash
 miktex-pdflatex latexFile.tex
 ```
 
-Or open TeXstudio and press F5 after creating a new file to directly compile and view it.
+Or open TeXstudio and press `F5` after creating a new file to directly compile and view it.
 
 ## Compile the TeX file in TeXstudio
 

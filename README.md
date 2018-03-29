@@ -9,7 +9,7 @@ To compile and edit them without too much pain you need to install the following
 - [TeXstudio](https://www.texstudio.org/)
 - [MiKTeX](https://miktex.org/download) (while the installation set `always` for the option to *install packages on the fly*)
 
-Then you can for once compile any $\LaTeX$ file via command line:
+Then you can for once compile any LaTeX​ file via command line:
 
 ```bash
 miktex-pdflatex latexFile.tex

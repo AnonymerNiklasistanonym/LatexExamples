@@ -1,0 +1,66 @@
+% Use T1 font encoding for better hyphenation, accented characters
+\usepackage[T1]{fontenc}
+% Allows direct use of Unicode characters
+\usepackage[utf8]{inputenc}
+
+% Use Latin Modern fonts instead of the default fonts
+\usepackage{lmodern}
+% Improves typography/readability
+\usepackage{microtype}
+
+% Define custom colors
+\usepackage{xcolor}
+
+% Advanced math formatting/symbols
+\usepackage{amsmath, amssymb}
+
+% Provides customizable lists: itemize, enumerate
+\usepackage{enumitem}
+
+% Automatically expand used acronyms
+% \gls{}      → prints full form first time, acronym afterwards
+% \acrshort{} → acronym only
+% \acrfull{}  → full form only
+\usepackage[acronym]{glossaries}
+
+% Bibliography/Citations
+\usepackage[
+	backend=biber,
+	% Style (style=numeric,style=ieee)
+	style=ieee,
+	% Sorting (sorting=none, sorting=ynt)
+	sorting=none,
+]{biblatex}
+
+% Typeset units and numbers
+\usepackage{siunitx}
+
+% Force figures to not move to the next page: \begin{figure}[H]
+\usepackage{float}
+
+% Include graphics/images: \includegraphics -> image
+\usepackage{graphicx}
+% Better looking tables (\toprule, \midrule, \bottomrule)
+\usepackage{booktabs}
+% Customize captions for figures/tables
+\usepackage{caption}
+% Subfigures inside a figure
+\usepackage{subcaption}
+
+% Compute total page count
+\usepackage{lastpage}
+
+% Modern Syntax highlighting for code
+\usepackage{minted}
+
+% Embed CSV data as tables
+\usepackage{csvsimple}
+% Easy multiline cells
+% > \makecell{\textbf{Broadcast-} \\ \textbf{Adresse}}
+\usepackage{makecell}
+
+% KOMA package for headers and footers
+\usepackage{scrlayer-scrpage}
+
+% Quotations: \enquote{text} -> "text"
+\usepackage{csquotes}

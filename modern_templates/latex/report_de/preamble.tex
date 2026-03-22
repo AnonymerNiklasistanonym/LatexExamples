@@ -1,0 +1,42 @@
+% Document template:
+\documentclass[%
+	paper=a4,      % Page size
+	fontsize=11pt, % Font size
+	parskip=half,  % KOMA option: adds half-line vertical space between paragraphs
+]{scrartcl}
+
+% Page margins: Normal DIN A4 margins
+\usepackage[%
+	a4paper,
+	top=25mm,
+	bottom=25mm,
+	left=25mm,
+	right=25mm,
+]{geometry}
+
+% Languages: German default (first in the list), English secondary
+\usepackage[ngerman,english]{babel}
+
+% Load shared preamble
+\input{../latex/preamble}
+
+% [scrlayer-scrpage] set headers and footers
+\clearpairofpagestyles % clears default header/footer content
+\cfoot[%
+	\normalfont\pagemark\ von \pageref{LastPage}
+]{%
+	\normalfont\pagemark\ von \pageref{LastPage}
+}                      % set centered footer content
+
+% [siunitx] configure scientific units
+\sisetup{%
+	locale = DE,
+	separate-uncertainty = true,
+	per-mode = symbol
+}
+
+% Load macros
+\input{../latex/macros}
+
+% Load global config
+\input{../latex/config}

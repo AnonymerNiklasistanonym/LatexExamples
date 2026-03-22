@@ -1,0 +1,27 @@
+% Check if required metadata can be found
+\requirecommand{university}
+\requirecommand{keywords}
+
+\requirecommand{paperTitle}
+\requirecommand{paperDate}
+
+\requirecommand{paperAuthors}
+\requirecommand{paperEmails}
+
+% Metadata
+\title{\paperTitle}
+\author{\paperAuthors}
+\date{\paperDate}
+
+% PDF metadata and document links
+\usepackage[%
+	% Adds hyperlinks but removes the colored boxes/underlines around links
+	hidelinks,
+	% Adds pdf metadata
+	pdftex,
+	pdfauthor={\paperAuthors},
+	pdftitle={\paperTitle},
+	pdfsubject={\university},
+	pdfkeywords={\keywords},
+]{hyperref}
+

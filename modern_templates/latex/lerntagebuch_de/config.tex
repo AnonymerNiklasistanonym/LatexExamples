@@ -1,0 +1,47 @@
+% Check if required metadata can be found
+\requirecommand{course}
+\requirecommand{university}
+\requirecommand{keywords}
+
+\requirecommand{reportName}
+\requirecommand{reportTitle}
+\requirecommand{reportDate}
+
+\requirecommand{reportAuthor}
+\requirecommand{reportEmail}
+
+% Metadata
+\title{\reportTitle{}: \reportName}
+\author{\reportAuthor}
+\date{\reportDate}
+
+% PDF metadata and document links
+\usepackage[%
+	% Adds hyperlinks but removes the colored boxes/underlines around links
+	hidelinks,
+	% Adds pdf metadata
+	pdftex,
+	pdfauthor={\reportAuthor},
+	pdftitle={\reportTitle{}: \reportName},
+	pdfsubject={\course\ (\university)},
+	pdfkeywords={\keywords},
+]{hyperref}
+
+% Report title
+\makeatletter
+\renewcommand{\maketitle}{%
+	\begin{center}
+		{\LARGE\bfseries \reportTitle\\[0.5em] \enquote{\reportName} \par}
+		\vspace{0.5em}
+		{\large \reportDate \par}
+		\vspace{2em}
+		\begin{tabular}{rl}
+			Name:              & \reportAuthor \\[0.3em]
+			Email:             & \reportEmail  \\[0.3em]
+			Lehrveranstaltung: & \course       \\
+			                   & \university
+		\end{tabular}
+	\end{center}
+	\vspace{2em}
+}
+\makeatother

@@ -1,0 +1,18 @@
+% Colors (global)
+\definecolor{codebg}{rgb}{0.95,0.95,0.97}       % light gray-blue background
+\definecolor{codeframe}{rgb}{0.8,0.8,0.85}      % subtle frame color
+\definecolor{linenumbercolor}{rgb}{0.2,0.2,0.6} % dark blue for numbers
+
+\makeatletter
+\newcommand{\requirecommand}[1]{%
+	\@ifundefined{#1}{%
+		\GenericError{(LaTeX)}{Command #1 is not defined. Please define it in config.tex.}%
+		{}%
+		{}%
+	}{}%
+}
+\makeatother
+
+% Table cells
+\setlength{\tabcolsep}{6pt}       % Horizontal padding between columns
+\renewcommand{\arraystretch}{1.4} % Vertical padding for rows

@@ -1,0 +1,25 @@
+stages:
+  - build
+
+variables:
+  # Prevent interactive prompts in LaTeX
+  TEXINPUTS: ".:"
+
+build_latex:
+  image: texlive/texlive:latest
+  stage: build
+  script:
+    - apt-get update && apt-get install -y python3-venv biber
+    - python3 -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install Pygments
+    - python3 build.py
+  artifacts:
+    paths:
+      - build/*.pdf
+      #- build/**/*.pdf Subdirectory check not necessary, build script already copies the file
+    expire_in: 1 week
+  only:
+    - main
+    - merge_requests

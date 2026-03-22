@@ -1,0 +1,9 @@
+indentRules:
+  default: "	"   # tab
+
+modifyLineBreaks:
+  preserveBlankLines: 1
+
+indentAfterItems:
+  itemize: 1
+  enumerate: 1

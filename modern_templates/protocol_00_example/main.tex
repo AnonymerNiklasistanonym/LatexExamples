@@ -1,0 +1,45 @@
+\input{../latex/report_de/preamble}
+
+
+% Acronyms (local)
+% ================
+\IfFileExists{acronyms.tex}{
+    \input{acronyms}
+}
+
+% References (local)
+% ==================
+\IfFileExists{references.bib}{
+    \addbibresource{references.bib}
+}
+
+
+% Metadata
+% ==================
+\newcommand{\course}{113460a Praktikum Rechnernetze}
+\newcommand{\university}{Hochschule der Medien, Stuttgart}
+\newcommand{\keywords}{Hochschule der Medien, HdM, Praktikum, Rechnernetze, Protokoll}
+
+\newcommand{\reportName}{Beispiel}
+\newcommand{\reportTitle}{Laborprotokoll 0}
+\newcommand{\reportDate}{10.03.2026}
+
+\newcommand{\reportAuthors}{Anna Fuchs, Bruno Bär, Caro Eule}
+\newcommand{\reportEmails}{\{af123,bb456,ce789\}@hdm-stuttgart.de}
+
+\newcommand{\reportDateSubmission}{17.03.2026}
+
+
+\input{../latex/report_de/config}
+\begin{document}
+\input{../latex/report_de/begin}
+
+
+\input{sections/introduction}
+\input{sections/media}
+\input{sections/code}
+\input{sections/tables}
+
+
+\input{../latex/report_de/end}
+\end{document}

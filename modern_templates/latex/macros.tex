@@ -16,3 +16,38 @@
 % Table cells
 \setlength{\tabcolsep}{6pt}       % Horizontal padding between columns
 \renewcommand{\arraystretch}{1.4} % Vertical padding for rows
+
+% Styled code input
+% \codefile[linenos, highlightlines={10-12}, firstline=5]{python}{code/client.py}
+\NewDocumentCommand{\codefile}{O{} m m}{%
+	\inputminted[
+		fontsize=\normalsize,
+		baselinestretch=1.2,
+		breaklines,
+		frame=lines,
+		rulecolor=\color{codeframe},
+		framesep=2mm,
+		xleftmargin=5mm,
+		xrightmargin=5mm,
+		#1
+	]{#2}{#3}%
+}
+% \begin{codeblock}[linenos, highlightlines={10-12}, firstline=5]{python}
+% ...
+% \end{codeblock}
+\newenvironment{codeblock}[2][]{%
+	\VerbatimEnvironment
+	\begin{minted}[
+    fontsize=\normalsize,
+    baselinestretch=1.2,
+    breaklines,
+    frame=lines,
+    rulecolor=\color{codeframe},
+    framesep=2mm,
+    xleftmargin=5mm,
+    xrightmargin=5mm,
+    #1
+  ]{#2}%
+}{%
+  \end{minted}
+}

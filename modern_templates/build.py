@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-from config import TARGET_DIRS
+from config import TARGET_DIRS, PDF_COMPRESSION_QUALITY
 from pathlib import Path
+from typing import Optional
 import shutil
 import subprocess
 import sys
@@ -33,7 +34,7 @@ def check_dependencies(dependencies=REQUIRED_TOOLS, optional_dependencies=[*REQU
     else:
         print("[INFO] All optional dependencies found")
 
-def run_latexmk(dir: Path):
+def run_latexmk(dir: Path, pdf_compression_quality: Optional[str]=None):
     OUTPUT_DIR = DIST_DIR / dir.name
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -64,12 +65,12 @@ def run_latexmk(dir: Path):
     if PDF_FILE.exists():
         shutil.copy(PDF_FILE, PDF_FILE_DIST)
         print(f"[INFO] Copied PDF to {PDF_FILE_DIST}")
-        compress_pdf(PDF_FILE_DIST)
+        compress_pdf(PDF_FILE_DIST, quality=pdf_compression_quality or "printer")
     else:
         raise Exception("PDF not found, build failed")
 
 
-def compress_pdf(input_pdf_path: Path):
+def compress_pdf(input_pdf_path: Path, quality="printer"):
     if shutil.which("gs") is None:
         print("[WARN] Did not find program to compress the PDF output")
         return
@@ -82,7 +83,7 @@ def compress_pdf(input_pdf_path: Path):
         subprocess.run([
             "gs",
             "-sDEVICE=pdfwrite",                    # Generating a new PDF
-            "-dPDFSETTINGS=/printer",               # Preset for compression/quality
+            f"-dPDFSETTINGS=/{quality}",            # Preset for compression/quality
             #                                         - /screen:   lowest quality, smallest size
             #                                         - /ebook:    medium quality
             #                                         - /printer:  high quality
@@ -93,7 +94,7 @@ def compress_pdf(input_pdf_path: Path):
             f"-sOutputFile={PDF_COMPRESSED_FILE}", # Output file path
             str(input_pdf_path),
         ], check=True)
-        print(f"[INFO] Created compressed PDF to {PDF_COMPRESSED_FILE}")
+        print(f"[INFO] Created compressed PDF to {PDF_COMPRESSED_FILE} (quality={quality})")
     except subprocess.CalledProcessError as e:
         raise RuntimeError("Ghostscript compression failed") from e
 
@@ -139,10 +140,10 @@ def main():
         else:
             for target in TARGET_DIRS:
                 if sys.argv[1].lower() == target.name.lower():
-                    run_latexmk(target)
+                    run_latexmk(target, PDF_COMPRESSION_QUALITY)
     else:
         for target in TARGET_DIRS:
-            run_latexmk(target)
+            run_latexmk(target, PDF_COMPRESSION_QUALITY)
 
 
 if __name__ == "__main__":

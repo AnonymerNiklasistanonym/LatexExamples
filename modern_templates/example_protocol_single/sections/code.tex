@@ -1,0 +1,103 @@
+\section{Code}
+
+Inline Code: \mintinline{python}{print("Hello World")}
+
+\begin{listing}[ht]
+	\begin{center}
+		\begin{minted}{python}
+print("Hello World")
+        \end{minted}
+	\end{center}
+	\caption{Code Block}
+	\label{fig:code-block}
+\end{listing}
+
+\begin{listing}[ht]
+	\begin{center}
+		\begin{minted}[
+            linenos,
+            % Font size (e.g. \small or \footnotesize if text is too big)
+            fontsize=\normalsize,
+            % Space between the lines
+            baselinestretch=1.2,
+            % Break long lines to a new line instead of overflowing
+            breaklines,
+            % Frame/Rules drawn around code block (single=rectangel, lines=top/bottom rule)
+            frame=lines,
+            % Frame/Rule color
+            rulecolor=\color{codeframe},
+            % Spacing between frame and conent
+            framesep=2mm,
+            % Left and right margin (before line numbers, after frame)
+            xleftmargin=5mm,
+            xrightmargin=5mm,
+        ]{python}
+# Make sure to not have any spaces before the code
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+        \end{minted}
+	\end{center}
+	\caption{Code Block mit Zeilennummern und Abgrenzungen \texttt{[linenos, frame=lines]}}
+\end{listing}
+
+\begin{listing}[H]
+	\begin{center}
+		\inputminted[
+			linenos,
+			% Font size (e.g. \small or \footnotesize if text is too big)
+			fontsize=\normalsize,
+			% Space between the lines
+			baselinestretch=1.2,
+			% Break long lines to a new line instead of overflowing
+			breaklines,
+			% Frame/Rules drawn around code block (single=rectangel, lines=top/bottom rule)
+			frame=lines,
+			% Frame/Rule color
+			rulecolor=\color{codeframe},
+			% Spacing between frame and conent
+			framesep=2mm,
+			% Left and right margin (before line numbers, after frame)
+			xleftmargin=5mm,
+			xrightmargin=5mm,
+			% Highlight specific lines
+			highlightlines={14},
+			% First line to show
+			firstline=7,
+		]{python}{code/server.py}
+
+	\end{center}
+	\caption{Code Block aus Datei mit hervorgehobenen Zeilen}
+\end{listing}
+
+\begin{listing}[H]
+	\begin{center}
+		\inputminted[
+			linenos,
+			% Font size (e.g. \small or \footnotesize if text is too big)
+			fontsize=\normalsize,
+			% Space between the lines
+			baselinestretch=1.2,
+			% Break long lines to a new line instead of overflowing
+			breaklines,
+			% Frame/Rules drawn around code block (single=rectangel, lines=top/bottom rule)
+			frame=lines,
+			% Frame/Rule color
+			rulecolor=\color{codeframe},
+			% Spacing between frame and conent
+			framesep=2mm,
+			% Left and right margin (before line numbers, after frame)
+			xleftmargin=5mm,
+			xrightmargin=5mm,
+			% Highlight specific lines
+			highlightlines={3,4},
+			% First line to show
+			firstline=7,
+			% First line number
+			firstnumber=1,
+		]{python}{code/client.py}
+
+	\end{center}
+	\caption{Code Block aus Datei mit hervorgehobenen Zeilen}
+\end{listing}

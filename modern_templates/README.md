@@ -2,14 +2,17 @@
 
 ## Build `.pdf`
 
-Running the following commands will create a `.pdf`/`_compressed.pdf` in `build` for all targets listed in `config.py`.
+Running the following commands will create `.pdf`/`_compressed.pdf` files in `build` for all or specific targets listed in `config.py`.
 
 **Linux:**
 
 ```sh
-./build.py
-# a specific target
-./build.py protocol_00_example
+./latex.py
+# or a specific target
+./latex.py build protocol
+# automatically build latest version after file changes
+./latex.py build --watch protocol
+./latex.py build --watch-open protocol
 ```
 
 Requires:
@@ -24,7 +27,35 @@ Requires:
 **Windows:**
 
 ```sh
-python build.py
-# a specific target
-python build.py protocol_00_example
+python latex.py
+# or a specific target
+python latex.py build protocol
+# automatically build latest version after file changes
+python latex.py build --watch protocol
+python latex.py build --watch-open protocol
+```
+
+## Spellcheck
+
+```sh
+# Get source code
+git clone https://github.com/ggml-org/llama.cpp.git
+```
+
+```sh
+# Update source code and build
+cd llama.cpp
+git pull
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON -DLLAMA_BUILD_TESTS=OFF && cmake --build build -j
+```
+
+```sh
+# Start llama.cpp web server
+cd llama.cpp
+./build/bin/llama-server -hf unsloth/gemma-4-E4B-it-GGUF:UD-Q4_K_XL --port 3000 --host 0.0.0.0
+```
+
+```sh
+# Start spellchecking by doing web requests to that web server (logfile and target are optional)
+uv run ./latex/proofreader/llamacpp_proofreader.py --logfile out.log protocol_01
 ```

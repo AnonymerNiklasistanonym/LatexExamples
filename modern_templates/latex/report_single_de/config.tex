@@ -3,18 +3,15 @@
 \requirecommand{university}
 \requirecommand{keywords}
 
-\requirecommand{reportName}
 \requirecommand{reportTitle}
 \requirecommand{reportDate}
-\requirecommand{reportDateSubmission}
-
-\requirecommand{reportAuthors}
-\requirecommand{reportEmails}
+\requirecommand{reportAuthor}
+\requirecommand{reportEmail}
 
 % Metadata
-\title{\reportTitle{}: \reportName}
-\author{\reportAuthors}
-\date{\reportDateSubmission}
+\title{\reportTitle}
+\author{\reportAuthor}
+\date{\reportDate}
 
 % PDF metadata and document links
 \usepackage[%
@@ -22,8 +19,8 @@
 	hidelinks,
 	% Adds pdf metadata
 	pdftex,
-	pdfauthor={\reportAuthors},
-	pdftitle={\reportTitle{}: \reportName},
+	pdfauthor={\reportAuthor (\reportEmail)},
+	pdftitle={\reportTitle},
 	pdfsubject={\course\ (\university)},
 	pdfkeywords={\keywords},
 ]{hyperref}
@@ -32,15 +29,13 @@
 \makeatletter
 \renewcommand{\maketitle}{%
 	\begin{center}
-		{\LARGE\bfseries \reportTitle\\[0.5em] \enquote{\reportName} \par}
+		{\LARGE\bfseries \reportTitle \par}
 		\vspace{0.5em}
-		{\large \reportDateSubmission \par}
+		{\large \reportDate \par}
 		\vspace{2em}
 		\begin{tabular}{rl}
-			Datum der Versuchsdurchführung: & \reportDate      \\[0.3em]
-			Gruppe:                         & \reportGroupName \\[0.3em]
-			                                & \reportAuthors   \\[0.3em]
-			Emails:                         & \reportEmails    \\[0.3em]
+			Autor:                          & \reportAuthor    \\[0.3em]
+			Email:                          & \reportEmail     \\[0.3em]
 			Lehrveranstaltung:              & \course          \\
 			                                & \university
 		\end{tabular}

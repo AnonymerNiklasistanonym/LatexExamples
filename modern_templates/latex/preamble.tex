@@ -3,13 +3,20 @@
 % Allows direct use of Unicode characters
 \usepackage[utf8]{inputenc}
 
+% For Unicode character not set up for use with LaTeX
+\DeclareUnicodeCharacter{25CF}{\textbullet}
+\DeclareUnicodeCharacter{2514}{-}
+\DeclareUnicodeCharacter{2500}{-}
+
 % Use Latin Modern fonts instead of the default fonts
 \usepackage{lmodern}
 % Improves typography/readability
 \usepackage{microtype}
 
 % Define custom colors
-\usepackage{xcolor}
+% - table: include rowcolor for table bg coloring
+% - dvipsnames: include more default color names
+\usepackage[table,dvipsnames]{xcolor}
 
 % Advanced math formatting/symbols
 \usepackage{amsmath, amssymb}
@@ -18,9 +25,10 @@
 \usepackage{enumitem}
 
 % Automatically expand used acronyms
-% \gls{}      → prints full form first time, acronym afterwards
-% \acrshort{} → acronym only
-% \acrfull{}  → full form only
+% \gls{}           → prints full form first time, acronym afterwards
+% \glsentrytext{}  → print acronym only (e.g. for captions)
+% \acrshort{}      → acronym only
+% \acrfull{}       → full form only
 \usepackage[acronym]{glossaries}
 
 % Bibliography/Citations
@@ -58,6 +66,8 @@
 % Easy multiline cells
 % > \makecell{\textbf{Broadcast-} \\ \textbf{Adresse}}
 \usepackage{makecell}
+% Break weird lines for tables: tabular=|c|c|>{\RaggedRight\arraybackslash}p{7cm}|
+\usepackage{ragged2e}
 
 % KOMA package for headers and footers
 \usepackage{scrlayer-scrpage}

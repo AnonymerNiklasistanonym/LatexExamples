@@ -1,0 +1,16 @@
+indentRules:
+  default: "\t"   # tab
+
+modifyLineBreaks:
+  preserveBlankLines: 1
+
+indentAfterItems:
+  itemize: 1
+  enumerate: 1
+
+# -----------------------------
+# Blacklist environments from formatting
+# -----------------------------
+verbatimEnvironments:
+  minted: 1
+  codeblock: 1

@@ -1,0 +1,40 @@
+\section{Tabellen}
+
+\begin{table}[ht]
+	\centering
+	\caption{Messwerte der Probe A}
+	\begin{tabular}{l S[table-format=3.1] S[table-format=2.2]}
+		\toprule
+		Probe & {Länge (\si{\cm})} & {Masse (\si{\gram})} \\
+		\midrule
+		1     & 12.3               & 4.56                 \\
+		2     & 11.8               & 4.12                 \\
+		3     & 12.5               & 4.78                 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}[ht]
+	\centering
+	\caption{Messwerte der Probe A}
+	\csvautotabular{data/messwerte.csv}
+\end{table}
+
+\begin{table}[ht]
+	\centering
+	\caption{Messwerte formatiert mit siunitx}
+	% S[table-format=...] tells siunitx how to align numbers (decimal points)
+	\begin{tabular}{l S[table-format=2.1] S[table-format=1.2]}
+		\toprule
+		Probe    & {Länge (\si{\cm})} & {Masse (\si{\gram})} \\
+		\midrule
+		\csvreader[
+		late after line=                                     \\,
+			head to column names
+		]{data/messwerte.csv}{}%
+		{%
+		\csvcoli & \num{\csvcolii}    & \num{\csvcoliii}     %
+		}
+		\bottomrule
+	\end{tabular}
+\end{table}

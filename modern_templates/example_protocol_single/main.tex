@@ -1,0 +1,42 @@
+\input{../latex/report_single_de/preamble}
+
+
+% Acronyms (local)
+% ================
+\IfFileExists{acronyms.tex}{
+    \input{acronyms}
+}
+
+% References (local)
+% ==================
+\IfFileExists{references.bib}{
+    \addbibresource{references.bib}
+}
+
+
+% Metadata
+% ==================
+\newcommand{\course}{Beispielkurs}
+\newcommand{\university}{Universität}
+\newcommand{\keywords}{Universität, Beispielkurs}
+
+\newcommand{\reportTitle}{Protokoll}
+\newcommand{\reportDate}{10.03.2026}
+
+\newcommand{\reportAuthor}{Max Mustermann}
+\newcommand{\reportEmail}{max@mustermann.de}
+
+
+\input{../latex/report_single_de/config}
+\begin{document}
+\input{../latex/report_single_de/begin}
+
+
+\input{sections/introduction}
+\input{sections/media}
+\input{sections/code}
+\input{sections/tables}
+
+
+\input{../latex/report_single_de/end}
+\end{document}

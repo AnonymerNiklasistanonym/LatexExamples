@@ -13,12 +13,13 @@ MODEL="gemma3:4b"
 
 def spell_check(text: str, acronyms: Optional[str] = None):
     prompt = f"""
-    Correct German spelling in this LaTeX document.
-    Keep all LaTeX commands intact.
-    Don't use any formatting in the output so it can be used to replace the original document in git.
-    {f"Use the following acronyms correctly: {acronyms}" if acronyms else ''}
+    Act as a professional editor for LaTeX documents.
+    Please proofread the following text in LaTeX format for spelling, grammar, and punctuation mistakes.
+    Keep all LaTeX commands, newlines, spaces that are not text related intact.
+    {f"Use the following LaTeX glossary acronyms correctly: {acronyms}" if acronyms else ''}
+    Return the corrected text.
 
-    Document:
+    LaTeX document part:
     {text}
     """
 

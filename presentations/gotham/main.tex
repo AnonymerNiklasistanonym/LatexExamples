@@ -1,0 +1,132 @@
+\ifdefined\HANDOUTMODE
+	% handout: final overlay + notes
+	% buggy sometimes because minted blocks can't be easily wrapped
+	\documentclass[handout, aspectratio=169, 10pt]{beamer}
+  	\setbeameroption{show notes}    
+\else
+	% normal presentation
+	\documentclass[aspectratio=169, 10pt]{beamer}
+	% notes are automatically suppressed
+\fi
+
+% Change language to german
+%\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+%\usepackage[ngerman]{babel}
+
+% References
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+% Theme
+\usetheme{gotham}
+
+% Reset font sizes to allow changing fullsize font size
+\setbeamerfont{bibliography entry title}{size=}
+\setbeamerfont{bibliography entry author}{size=}
+\setbeamerfont{bibliography entry location}{size=}
+\setbeamerfont{bibliography entry note}{size=}
+
+\gothamset{
+	% Defaults
+	background=transparent,
+	block=native,
+	%numbering= framenumber,
+	parttocframe default=off,
+	sectiontocframe default=off,
+	subsectiontocframe default=off,
+	% Custom
+	tocframe template= gotham simple,
+	%progressbar position=foot,
+	numbering= totalframenumber,
+}
+
+% Custom ToC for less spacing between sections
+\makeatletter
+\def\beamer@sectionintoc#1#2#3#4#5{%
+	\vspace{0.35em}%
+	\leavevmode
+	\leftskip=1.5em
+	\usebeamerfont{section number projected}#1\hspace{0.75em}%
+	\usebeamerfont{section in toc}#2\par
+}
+\makeatother
+
+\usepackage{standalone}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+%\usepackage{pgfplots}
+\usepackage{tabularray} % Typeset tabulars and arrays (contains equivalent of longtable, booktabs and dcolumn at least)
+	\UseTblrLibrary{booktabs} % to load extra commands from booktabs
+\usepackage{changepage}
+\usepackage{appendixnumberbeamer}
+	\newcommand{\famName}[1]{\textsc{#1}}
+\usepackage{minted}
+	\definecolor{codeback}{rgb}{0.90,0.91,0.92}
+	\definecolor{codebackdark}{rgb}{0.10,0.11,0.12}
+	\usemintedstyle{emacs}
+	\setmintedinline[tex]{bgcolor=codeback}
+	\setminted[tex]{
+		autogobble,
+		bgcolor=codeback,
+		tabsize=4,
+		extrakeywords={usetheme,institute,maketitle,subtitle,gothamset,colorlet,setbeamercolor,plain,defbeamertemplate}
+	}
+
+\usepackage[scale=2]{ccicons}
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{dateplot}
+\usepackage{colortbl} % alternating table colors
+
+% Footnote without a marker (https://tex.stackexchange.com/a/30726)
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\newcommand{\themename}{\textbf{\textsc{Gotham}}}
+\newcommand{\patternname}{RAII - Resource Acquisition Is Initialization}
+
+\title[]{\patternname}
+\subtitle{Example Title}
+\date[]{2026.01.09}
+\author[]{Your Name \textless{your@email.de}\textgreater}
+\institute{HdM Stuttgart}
+%\titlegraphic{\hfill\includegraphics[height=1.5cm]{res/HdM_Logo.pdf}}
+
+% Make printbibliography smaller
+\renewcommand*{\bibfont}{\footnotesize}
+
+\begin{document}
+
+\maketitle
+
+\input{section/intro.tex}
+
+\begin{frame}[toc]{Table of Contents (\patternname)}
+	\tableofcontents[hideallsubsections]
+	% Don't include subsections for simpler visuals
+	%\tableofcontents%[hideallsubsections]
+\end{frame}
+
+\input{section/anti-patterns.tex}
+
+\input{section/raii.tex}
+
+\input{section/problems-and-shortcomings.tex}
+
+\input{section/other-implementations.tex}
+
+\input{section/questions.tex}
+
+\input{section/discussion.tex}
+
+\input{section/references-and-credits.tex}
+
+\appendix
+
+\input{section/backup.tex}
+
+\end{document}

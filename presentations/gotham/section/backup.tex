@@ -1,0 +1,140 @@
+\begin{frame}[fragile]{Backup: Python Implementation of RAII}
+	\begin{figure}
+		\centering
+		\begin{columns}[T,onlytextwidth]
+			\begin{column}{0.5\textwidth}
+				\begin{minted}{py}
+def read_file():
+    f = open("data.txt", "r")
+    content = f.read()
+    return content
+		\end{minted}
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{py}
+def read_file():
+    with open("data.txt", "r") as f:
+        content = f.read()
+    return content
+				\end{minted}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{minted}{py}
+class FileReader:
+    def __init__(self, path):
+        self.file = open(path, "r")
+    def read(self):
+        return self.file.read()
+    def __del__(self):
+        if not self.file.closed:
+            self.file.close()
+def read_file():
+    reader = FileReader("data.txt")
+    return reader.read()
+				\end{minted}
+			\end{column}
+		\end{columns}
+		\caption{Example: RAII concepts in Python}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Backup: C++ Lock Guard}
+	\begin{figure}
+		\centering
+		\begin{columns}[T,onlytextwidth]
+			\begin{column}{0.5\textwidth}
+				\begin{minted}{cpp}
+#include <mutex>
+std::mutex m;
+void critical_section() {
+	m.lock();
+	// critical work
+	m.unlock();
+} // unlock may not be executed
+  // on exception throw
+				\end{minted}
+			\end{column}
+			\begin{column}{0.5\textwidth}
+				\begin{minted}{cpp}
+#include <mutex>
+std::mutex m;
+void critical_section() {
+    std::lock_guard<std::mutex> lock(m);
+    // critical work
+} // mutex is automatically unlocked
+				\end{minted}
+			\end{column}
+		\end{columns}
+		\caption{Example: C++ Lock Guard for concurrency control}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Backup: C++ Shared Pointer (Reference Counting)}
+	\begin{figure}
+		\centering
+		\begin{minted}{cpp}
+#include <iostream>
+#include <memory>
+int main() {
+    std::shared_ptr<int> a = std::make_shared<int>(42);
+    {
+		// share/copy pointer
+        std::shared_ptr<int> b = a; // reference count increases
+        std::cout << *b << '\n';
+    } // b goes out of scope, reference count decreases
+    std::cout << *a << '\n';
+} // a goes out of scope, resource is released
+		\end{minted}
+		\caption{Example: C++ Reference Counting}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Backup: Use Valgrind to detect Memory Management problems (i)}
+	\begin{figure}
+		\centering
+		\begin{minted}{cpp}
+void leak() {
+    int* data = new int[10];  // allocated
+    data[0] = 42;
+    // missing delete[] → leak
+}
+int main() {
+    leak();
+}
+		\end{minted}
+		\begin{minted}{sh}
+g++ -g -O0 leak.cpp -o leak
+valgrind --leak-check=full --show-leak-kinds=all ./leak
+		\end{minted}
+		\caption{Example: Use valgrind to find Memory Leaks in e.g. C++ (i)}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Backup: Use Valgrind to detect Memory Management problems (ii)}
+	\begin{figure}
+		\centering
+		\begin{minted}[fontsize=\scriptsize]{text}
+==122274== Memcheck, a memory error detector
+==122274== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==122274== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==122274== Command: ./leak
+==122274== HEAP SUMMARY:
+==122274==     in use at exit: 40 bytes in 1 blocks
+==122274==   total heap usage: 2 allocs, 1 frees, 73,768 bytes allocated
+==122274== 40 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==122274==    at 0x4850613: operator new[](unsigned long) (vg_replace_malloc.c:729)
+==122274==    by 0x400114A: leak() (leak.cpp:3)
+==122274==    by 0x4001164: main (leak.cpp:8)
+==122274== 
+==122274== LEAK SUMMARY:
+==122274==    definitely lost: 40 bytes in 1 blocks
+==122274==    indirectly lost: 0 bytes in 0 blocks
+==122274==      possibly lost: 0 bytes in 0 blocks
+==122274==    still reachable: 0 bytes in 0 blocks
+==122274==         suppressed: 0 bytes in 0 blocks
+==122274== 
+==122274== For lists of detected and suppressed errors, rerun with: -s
+==122274== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+		\end{minted}
+		\caption{Example: Use valgrind to find Memory Leaks in e.g. C++ (ii)}
+	\end{figure}
+\end{frame}

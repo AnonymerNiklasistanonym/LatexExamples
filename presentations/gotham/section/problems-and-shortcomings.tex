@@ -1,0 +1,148 @@
+\section{Problems and Shortcomings}
+
+\begin{frame}[fragile]{Problem: RAII Is not the default}
+	\begin{columns}[T,onlytextwidth]
+		\begin{column}{0.35\textwidth}
+			\begin{itemize}
+				\item Programmers need to be aware of the pattern
+				\item The Standard Library implements RAII but it's not required for other libraries or C libraries which often require RAII wrappers:
+				      \begin{itemize}
+					      \item Container
+					      \item Smart Pointer
+					      \item Lock Guard
+				      \end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.6\textwidth}
+			\begin{figure}
+				\centering
+				\begin{minted}{cpp}
+struct Resource {};
+int main() {
+    Resource* r = new Resource();
+    delete r; // RAII not automatic
+}
+                \end{minted}
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{cpp}
+#include <memory>
+struct Resource {};
+int main() {
+    auto s = std::make_unique<Resource>();
+}  // RAII automatic
+                \end{minted}
+				\caption{Example: C++ RAII is not the default}
+			\end{figure}
+		\end{column}
+	\end{columns}
+	\blfootnote{\cite{Stroustrup2018-ic} \cite{Meyers2014-ot}}
+\end{frame}
+
+\begin{frame}[fragile]{Problem: Ownership Issues}
+	\begin{columns}[T,onlytextwidth]
+		\begin{column}{0.37\textwidth}
+			\begin{itemize}
+				\item Rule of Three (Copy)
+				      \begin{enumerate}
+					      \item \textbf{Destructor: release resource}
+					      \item \textit{Copy} constructor: Copy the resource safely
+					      \item \textit{Copy} assignment operator
+				      \end{enumerate}
+				\item Rule of Five (Move)
+				      \begin{enumerate}\setcounter{enumi}{3}
+					      \item \textit{Move} constructor: Transfer ownership safely
+					      \item \textit{Move} assignment operator
+				      \end{enumerate}
+				\item Reference Counting
+				      \begin{itemize}
+					      \item \mintinline{cpp}|std::shared_ptr|
+					      \item \mintinline{cpp}|std::weak_ptr|
+				      \end{itemize}
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.58\textwidth}
+			\begin{figure}
+				\centering
+				\begin{minted}{cpp}
+#include <cstring>
+struct Buffer {
+    char* data;
+    Buffer(const char* s) {
+        data = new char[strlen(s)+1];
+        strcpy(data, s);
+    }
+    ~Buffer() { delete[] data; }
+};
+int main() {
+    Buffer a("Hello");
+    Buffer b = a; // default copy: shallow copy
+} // a and b both run Destructor: double free
+                \end{minted}
+				\caption{Example: C++ RAII Rule of Three reason}
+			\end{figure}
+		\end{column}
+	\end{columns}
+	\vspace{-1cm}
+	\blfootnote{\cite{Meyers2014-ot} \cite{isocpp_coreguidelines}}
+\end{frame}
+
+\begin{frame}[fragile]{Problem: Cyclic References}
+	\begin{columns}[T,onlytextwidth]
+		\begin{column}{0.35\textwidth}
+			\begin{itemize}
+				\item RAII Destructors may not run if objects reference each other
+				\item \textit{A Garbage Collector can actually detect that both nodes are not referenced since it doesn't rely on reference counting}
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.6\textwidth}
+			\begin{figure}
+				\centering
+				\begin{minted}{cpp}
+#include <memory>
+struct Node {
+    std::shared_ptr<Node> next;
+};
+int main() {
+    auto a = std::make_shared<Node>();
+    auto b = std::make_shared<Node>();
+    a->next = b;
+    b->next = a;
+} // cycle: memory leak
+                \end{minted}
+				\caption{Example: C++ Cyclic References break RAII}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Problem: Inheritance Issues}
+	\begin{columns}[T,onlytextwidth]
+		\begin{column}{0.35\textwidth}
+			\begin{itemize}
+				\item \mintinline{cpp}|Derived|'s Destructor is never called because \mintinline{cpp}|Base|'s Destructor is not \mintinline{cpp}|virtual|
+				\item Performance/Memory overhead: \mintinline{cpp}|virtual| introduces a small runtime (dynamic dispatch) and memory (alignment) cost because of a pointer on each object and a class vtable
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.6\textwidth}
+			\begin{figure}
+				\centering
+				\begin{minted}{cpp}
+class Base {
+public:
+                  Base() {}
+    /* virtual */ ~Base() {}
+};
+class Derived : public Base {
+public:
+    Derived() {}
+    ~Derived() {}
+};
+int main() {
+    Base* obj = new Derived();
+} // only Base Destructor is called!
+                \end{minted}
+				\caption{Example: C++ RAII virtual importance}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}

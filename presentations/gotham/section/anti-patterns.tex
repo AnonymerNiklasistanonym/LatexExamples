@@ -1,0 +1,178 @@
+\section{Anti-Pattern}
+
+% FRAME
+\begin{frame}[fragile]{Anti-Pattern: Manual Resource Management}
+	\begin{tikzpicture}[remember picture,overlay]
+		\begin{onlyenv}<2->
+			\node at (current page.south east) [xshift=-3.5cm, yshift=5.8cm]
+			{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+		\end{onlyenv}
+		\begin{onlyenv}<3->
+			\node at (current page.south east) [xshift=-2cm, yshift=3.2cm]
+			{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+		\end{onlyenv}
+	\end{tikzpicture}
+	\begin{figure}
+		\centering
+		\begin{minipage}{0.8\linewidth}
+			\vspace{-5mm}
+			\begin{onlyenv}<1>
+				\vspace{0.1cm}
+				\begin{minted}{py}
+def read_file():
+    f = open("data.txt", "r")
+    content = f.read()
+
+    return content
+            \end{minted}
+			\end{onlyenv}
+			\begin{onlyenv}<2->
+				\begin{minted}{py}
+def read_file():
+    f = open("data.txt", "r")
+    content = f.read()
+    # f.close();  <-- Oops, never closed!
+    return content
+            \end{minted}
+			\end{onlyenv}
+			\begin{onlyenv}<1-2>
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{java}
+public String getString() {
+    Scanner scanner = new Scanner(System.in);
+    String name = scanner.nextLine();
+
+    return name;
+}
+            \end{minted}
+			\end{onlyenv}
+			\begin{onlyenv}<3->
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{java}
+public String getString() {
+    Scanner scanner = new Scanner(System.in);
+    String name = scanner.nextLine();
+    // scanner.close();  <-- Oops, never closed!
+    return name;
+}
+            \end{minted}
+			\end{onlyenv}
+		\end{minipage}
+		\caption{Example: Manual Resource Management in Python/Java}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Reminder: Memory Management Model Differences}
+	\begin{tikzpicture}[remember picture,overlay]
+		\only{
+			\node at (current page.south east) [xshift=-6.75cm, yshift=3.75cm]
+			{\includegraphics[width=0.6cm]{res/nuke.pdf}};
+			\node at (current page.south east) [xshift=-7.5cm, yshift=3.75cm]
+			{\includegraphics[width=0.6cm]{res/nuke.pdf}};
+		}<2->
+		\only{
+			\node at (current page.south east) [xshift=-2cm, yshift=1.25cm]
+			{\includegraphics[width=1.4cm]{res/nuke.pdf}};
+			\node at (current page.south east) [xshift=-3cm, yshift=1.25cm]
+			{\includegraphics[width=1.4cm]{res/nuke.pdf}};
+			\node at (current page.south east) [xshift=-4cm, yshift=1.25cm]
+			{\includegraphics[width=1.4cm]{res/nuke.pdf}};
+		}<4->
+	\end{tikzpicture}
+	\vspace{-1cm}
+	\begin{itemize}
+		\item \textbf{Java}: (Memory-Safe)
+		      \begin{itemize}
+			      \item Objects are allocated on the heap\footnote{Escape Analysis can enable stack allocation \cite{oracle_jvm_guide_jdk24}} and accessed via references (\mintinline{java}|new|)
+			      \item The JVM Garbage Collector determines whether objects are still reachable via references
+			            \begin{itemize}
+				            \item Possibly pausing execution at non-deterministic points
+				            \item Unreachable objects are reclaimed automatically (their memory)
+			            \end{itemize}
+			      \item Array bounds and pointer dereferences are checked at runtime
+			      \item Memory errors are limited to logical issues:
+			            \begin{itemize}
+				            \item \mintinline{java}|ArrayIndexOutOfBoundsException|
+				            \item \mintinline{java}|NullPointerException|
+			            \end{itemize}
+		      \end{itemize}
+		\item<3-> \textbf{C/C++}: (Memory-Unsafe)
+		      \begin{itemize}
+			      \item Memory (on the heap) is allocated \textbf{and freed} explicitly (\mintinline{c}|malloc|/\mintinline{c}|free|, \mintinline{cpp}|new|/\mintinline{cpp}|delete|)
+			      \item \textbf{No} runtime checks (e.g. array bounds, pointer dereferences)
+			      \item \textbf{Direct and unchecked} memory access
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Anti-Pattern: Manual Memory Management (i)}
+	\begin{tikzpicture}[remember picture,overlay]
+		\node at (current page.south east) [xshift=-3cm, yshift=6.3cm]
+		{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+		\only{
+			\node at (current page.south east) [xshift=-1.25cm, yshift=3.5cm]
+			{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+		}<2->
+		\only{
+			\node at (current page.south east) [xshift=-3cm, yshift=0.9cm]
+			{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+		}<3->
+	\end{tikzpicture}
+	\begin{figure}
+		\centering
+		\begin{minipage}{0.8\linewidth}
+			\begin{minted}{c}
+int *numbers = malloc(5 * sizeof(int));
+for (int i = 0; i < 5; i++) {
+	numbers[i] = i * 10;
+}
+// free(numbers);  <-- Memory never given back (Memory Leak)
+			\end{minted}
+			\begin{onlyenv}<-1>
+				\vspace{1.65cm}
+			\end{onlyenv}
+			\begin{onlyenv}<2->
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{c}
+free(numbers);
+free(numbers); // <-- Memory given back twice! (Double-Free)
+				\end{minted}
+			\end{onlyenv}
+			\begin{onlyenv}<-2>
+				\vspace{1.55cm}
+			\end{onlyenv}
+			\begin{onlyenv}<3->
+				\rule{\linewidth}{0.5mm}
+				\begin{minted}{c}
+free(numbers); // dangling pointer referencing invalid memory
+printf("%d\n", numbers[0]); // <-- Use after free!
+				\end{minted}
+			\end{onlyenv}
+		\end{minipage}
+		\caption{Example: Manual Memory Management in C}
+	\end{figure}
+	\vspace{-1cm}
+	\blfootnote{\cite{CWE401} \cite{CWE415} \cite{CWE416}}
+\end{frame}
+
+\begin{frame}[fragile]{Anti-Pattern: Manual Memory Management (ii)}
+	\begin{tikzpicture}[remember picture,overlay]
+		\node at (current page.south east) [xshift=-4cm, yshift=4cm]
+		{\includegraphics[width=1.5cm]{res/nuke.pdf}};
+	\end{tikzpicture}
+	\begin{figure}
+		\centering
+		\begin{minipage}{0.8\linewidth}
+			\begin{minted}{cpp}
+int *numbers = malloc(5 * sizeof(int));
+for (int i = 0; i < 5; i++) {
+	numbers[i] = i * 10;
+}
+throw std::runtime_error("simulated error");
+free(buf); // <-- Memory never given back
+			\end{minted}
+		\end{minipage}
+		\caption{Example: Manual Memory Management in C++ (with Exceptions)}
+	\end{figure}
+	\blfootnote{\cite{isocpp_coreguidelines}}
+\end{frame}

@@ -1,0 +1,23 @@
+\section{Discussion}
+
+% FRAME
+\begin{standoutenv}
+	\begin{frame}[fragile]
+		\begin{enumerate}
+			\item<1-> Has anyone worked with memory unsafe languages before, and if yes what was your experience regarding memory/resource management?
+			\item<2-> RAII automates cleanup but is automation always better than manual intervention or when is it a bad idea?
+			\item<3-> What real-life systems, habits or patterns do you rely on to manage resources (like time, energy, ...) or maybe even unexpected interruptions/distractions?
+			\item<4-> Do you use or know any other patterns in programming languages or software to manage resources?
+		\end{enumerate}
+
+		\note{
+			\begin{itemize}
+				\item Segmentation Fault
+				\item Reliability and safety, Predictability, Time and cognitive savings but Performance overhead, Loss of flexibility, Unexpected side effects
+				\item Timers: Cooking Top, Pomodoro
+				\item Python context manager
+			\end{itemize}
+		}
+	\end{frame}
+\end{standoutenv}
+\addtocounter{framenumber}{1} % manually increment since standoutenv doesn't do it

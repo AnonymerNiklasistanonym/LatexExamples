@@ -1,0 +1,20 @@
+% \fallbackincludegraphics[width=0.4\textwidth]{profile.jpg}{fallback.png}
+\newcommand{\fallbackincludegraphics}[3][]{%
+	% #1 = options (width, height, etc.)
+	% #2 = primary image
+	% #3 = fallback image
+
+	\IfFileExists{#2}
+	{\includegraphics[#1]{#2}}
+	{\includegraphics[#1]{#3}}%
+}
+
+% \fallbackinput{data.tex}{data.template.tex}
+\newcommand{\fallbackinput}[2]{%
+	% #1 = primary file
+	% #2 = fallback file
+
+	\IfFileExists{#1}
+	{\input{#1}}
+	{\input{#2}}%
+}

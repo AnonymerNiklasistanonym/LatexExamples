@@ -1,0 +1,62 @@
+\documentclass[11pt,a4paper,sans]{moderncv}
+
+% Page margins: Normal DIN A4 margins
+\usepackage[%
+	a4paper,
+	top=25mm,
+	bottom=25mm,
+	left=25mm,
+	right=25mm,
+]{geometry}
+
+% Languages: German default (first in the list), English secondary
+\usepackage[ngerman,english]{babel}
+
+\input{preamble}
+\input{macros}
+
+\fallbackinput{data/data.tex}{template/data.tex}
+
+% TODO profile picture
+\patchcmd{\makehead}% <cmd>
+  {\\[2.5em]}% <search>
+  {\hfill\hspace{0.1cm}\raisebox{-1.8cm}[0pt][0pt]{
+    \fallbackincludegraphics[width=.18\textwidth]{data/profile.jpg}{template/profile.png}
+   }\\[2.5em]}% <replace>
+  {}{}% <success><failure>
+
+% Start the document
+\begin{document}
+
+\makecvtitle
+
+\fallbackinput{data/content.tex}{template/content.tex}
+
+% Abschnitt: Unterschrift
+\vspace{1cm}  % Vertikaler Abstand nach den vorherigen Abschnitten
+
+\noindent\begin{minipage}[t]{7.2cm}
+	\raggedright
+	\textit{\fallbackinput{data/signature.tex}{template/signature.tex}}
+\end{minipage}%
+\begin{minipage}[t]{6cm}
+	\raggedright
+	\fallbackincludegraphics[width=\textwidth]{data/signature.jpg}{template/signature.png}
+\end{minipage}
+
+% Linie für die Unterschriften
+\noindent\underline{\hspace{6cm}} \hspace{1cm} \underline{\hspace{6cm}}  % Zwei Unterschriftenlinien
+
+\vspace{0.25cm}  % Abstand nach den Linien
+
+% Beschriftung "Ort, Datum" und "Unterschrift"
+\noindent\begin{minipage}[t]{6cm}
+	\raggedleft
+	\textit{Ort, Datum}  % Beschriftung für den linken Bereich
+\end{minipage}%
+\begin{minipage}[t]{7.25cm}
+	\raggedleft
+	\textit{Unterschrift}  % Beschriftung für den rechten Bereich
+\end{minipage}
+
+\end{document}

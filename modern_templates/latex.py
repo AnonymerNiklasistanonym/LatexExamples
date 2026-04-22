@@ -239,7 +239,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.1"
+        version="%(prog)s 0.0.2"
     )
 
     # subparser
@@ -304,7 +304,7 @@ def main():
     elif args.command == "spell":
         run_aspell(args.lang, target_dir=target.target_dir if target is not None else None)
     elif args.command == "build":
-        if target is not None and (args.watch or args.watch_open):
+        if target is None and (args.watch or args.watch_open):
             logger.error("Watching changes is not supported for multiple targets!")
             sys.exit(1)
 

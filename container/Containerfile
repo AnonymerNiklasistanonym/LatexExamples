@@ -1,0 +1,29 @@
+FROM debian:stable-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    wget perl xz-utils fontconfig ghostscript make ca-certificates \
+    python3 python3-pygments \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /tmp
+
+# Install full TeX Live
+RUN wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz \
+    && tar -xzf install-tl-unx.tar.gz --strip-components=1 \
+    && printf "selected_scheme scheme-full\nTEXDIR /usr/local/texlive\n" > profile \
+    && ./install-tl -profile profile
+
+# Add TeX Live to PATH
+ENV PATH="/usr/local/texlive/bin/x86_64-linux:${PATH}"
+
+# Install latexmk explicitly
+RUN tlmgr install latexmk
+
+# Prebuild all formats
+RUN fmtutil-sys --all
+
+WORKDIR /data
+
+CMD ["latexmk", "-pdf", "-outdir=build", "-auxdir=build", "-interaction=nonstopmode", "-file-line-error", "-shell-escape", "main.tex"]

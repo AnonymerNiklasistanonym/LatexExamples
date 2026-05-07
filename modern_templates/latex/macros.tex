@@ -19,6 +19,20 @@
 \renewcommand{\arraystretch}{1.4} % Vertical padding for rows
 
 % Styled code input
+% \codeinline{code}
+% \codeinline{python}{code}
+% \codeinline[fontsize=\tiny]{python}{code}
+\NewDocumentCommand{\codeinline}{O{} m g}{%
+	\IfNoValueTF{#3}
+	{%
+		% Only one argument → default language = text
+		\mintinline[breaklines,breakanywhere,#1]{text}{#2}%
+	}
+	{%
+		% Two arguments → language + code
+		\mintinline[breaklines,breakanywhere,#1]{#2}{#3}%
+	}%
+}
 % \codefile[linenos, highlightlines={10-12}, firstline=5]{python}{code/client.py}
 \NewDocumentCommand{\codefile}{O{} m m}{%
 	\inputminted[
@@ -60,3 +74,7 @@
 \newcommand{\subtiny}{\fontsize{5}{6.5}\selectfont}
 \newcommand{\subscriptsize}{\fontsize{7.5}{8.5}\selectfont}
 \newcommand{\subscriptsizesmol}{\fontsize{7.25}{8.25}\selectfont}
+
+% Mark certain parts as English content for spell checking
+% \english{daemon}
+\newcommand{\english}[1]{#1}

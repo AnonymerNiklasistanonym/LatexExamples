@@ -76,6 +76,7 @@ def run_latexmk(
     target_dir: Path,
     pdf_compression_quality: Optional[str]=None,
     pdf_output_name: Optional[str]=None,
+    pdf_engine: Optional[str]=None,
     force=False,
     watch=False,
     watch_open=False,
@@ -89,16 +90,16 @@ def run_latexmk(
     try:
         run_command([
             "latexmk",
-            "-pdf",                                  # generate a pdf
-            *(["-f", "-g"] if force else []),              # force compilation
-            *(["-pvc"] if watch else []),            # continuous preview
-            *([] if watch_open else ["-view=none"]), # don't auto open pdf when doing continuous preview
-            "-cd",                                   # change directory to the location of the .tex file before compiling
-            f"-output-directory={output_dir}",       # redirects all build artifacts to an out of source build directory
-            "-pdflatex=pdflatex",                    # set LaTeX engine
-            "-shell-escape",                         # escape code symbols that otherwise break LaTeX compiler
-            f"-jobname={target_dir.name}",           # output .pdf name
-            "--file-line-error",                     # show what file and what line actually threw an error
+            "-pdf",                                               # generate a pdf
+            *(["-f", "-g"] if force else []),                     # force compilation
+            *(["-pvc"] if watch else []),                         # continuous preview
+            *([] if watch_open else ["-view=none"]),              # don't auto open pdf when doing continuous preview
+            "-cd",                                                # change directory to the location of the .tex file before compiling
+            f"-output-directory={output_dir}",                    # redirects all build artifacts to an out of source build directory
+            *([f"-pdflatex={pdf_engine}"] if pdf_engine else []), # set LaTeX engine (pdflatex, xetex)
+            "-shell-escape",                                      # escape code symbols that otherwise break LaTeX compiler
+            f"-jobname={target_dir.name}",                        # output .pdf name
+            "--file-line-error",                                  # show what file and what line actually threw an error
             "main.tex"
         ], cwd=target_dir)
     except subprocess.CalledProcessError:
@@ -199,6 +200,8 @@ def run_aspell(
     if tex_commands is None:
         tex_commands = [
             "addbibresource p",
+            "alph p",
+            "english p",
             "codefile opp",
             "color p",
             "csvautotabular pp",
@@ -239,7 +242,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.2"
+        version="%(prog)s 0.0.1"
     )
 
     # subparser
@@ -249,12 +252,15 @@ def main():
     target_options = argparse.ArgumentParser(add_help=False)
     target_options.add_argument("target", nargs="?", help="do this only for a specific target")
 
+    target_options_engine = argparse.ArgumentParser(add_help=False)
+    target_options_engine.add_argument("-e", "--engine", nargs="?", help="pdf engine (xetex, pdflatex)", default=False)
+
     # info
     info_parser = subparsers.add_parser("info")
     info_parser.add_argument("--targets", action="store_true", help="show targets (default: %(default)s)", default=True)
 
     # build
-    build_parser = subparsers.add_parser("build", parents=[target_options])
+    build_parser = subparsers.add_parser("build", parents=[target_options, target_options_engine])
     build_parser.add_argument("-f", "--force", action="store_true", help="force build", default=False)
     build_parser.add_argument("-w", "--watch", action="store_true", help="continuous build", default=False)
     build_parser.add_argument("-wo", "--watch-open", action="store_true", help="continuous build and open PDF", default=False)
@@ -311,6 +317,7 @@ def main():
         def build_target(target):
             run_latexmk(
                 target.target_dir,
+                pdf_engine=target.pdf_engine or args.engine,
                 pdf_compression_quality=target.pdf_compression_quality,
                 pdf_output_name=target.pdf_output_name,
                 force=args.force,
@@ -326,6 +333,7 @@ def main():
         def build_target(target):
             run_latexmk(
                 target.target_dir,
+                pdf_engine=target.pdf_engine,
                 pdf_compression_quality=target.pdf_compression_quality,
                 pdf_output_name=target.pdf_output_name,
             )

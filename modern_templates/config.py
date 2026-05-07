@@ -16,6 +16,8 @@ PROTOCOL_NAMES = {
 class BuildConfig:
     """Directory that contains the 'main.tex' file"""
     target_dir: Path
+    """Optional: PDF engine (pdflatex, xetex)"""
+    pdf_engine: Optional[str] = None
     """Optional: PDF compression quality (gs)"""
     pdf_compression_quality: Optional[str] = None
     """Optional: PDF output name"""

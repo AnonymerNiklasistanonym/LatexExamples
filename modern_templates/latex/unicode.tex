@@ -1,0 +1,15 @@
+% For Unicode character not set up for use with LaTeX
+\usepackage{iftex}
+\ifPDFTeX
+	\usepackage{pmboxdraw}
+	\DeclareUnicodeCharacter{25CF}{\textbullet}
+	\DeclareUnicodeCharacter{2514}{|\textSFx}
+	\DeclareUnicodeCharacter{251C}{|\textSFx}
+\else
+	\usepackage{newunicodechar}
+	\usepackage{pmboxdraw}
+	\newunicodechar{●}{\textbullet}
+	\newunicodechar{└}{| \textSFx}
+	\newunicodechar{├}{| \textSFx}
+	\newunicodechar{─}{\textSFx}
+\fi

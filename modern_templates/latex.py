@@ -27,34 +27,54 @@ DIST_DIR = ROOT_DIR / "build"
 LATEX_INDENT_DIR = ROOT_DIR / "latex" / "latexindent"
 LATEX_ASPELL_DIR = ROOT_DIR / "latex" / "aspell"
 
-REQUIRED_TOOLS = ["latexmk", "pdflatex", "biber", "pygmentize"]
-REQUIRED_TOOLS_COMPRESS = ["gs"]
-REQUIRED_TOOLS_FORMAT = ["latexindent"]
+REQUIRED_TOOLS = {
+    "latexmk": "--version",
+    "pdflatex": "--version",
+    "xelatex": "--version",
+    "lualatex": "--version",
+    "biber": "--version",
+    "pygmentize": "-V",
+}
+REQUIRED_TOOLS_COMPRESS = {
+    "gs": "--version",
+}
+REQUIRED_TOOLS_FORMAT = {
+    "latexindent": "--version"
+}
+REQUIRED_TOOLS_SPELL = {
+    "aspell": "--version"
+}
 
 MAX_WORKERS = os.cpu_count() or 1
 
 
-def check_dependencies(dependencies=None, optional_dependencies=None, verbose=False):
+def check_dependencies(dependencies=None, optional_dependencies=None):
     if dependencies is None:
         dependencies = REQUIRED_TOOLS
     if optional_dependencies is None:
-        optional_dependencies = [*REQUIRED_TOOLS_COMPRESS, *REQUIRED_TOOLS_FORMAT]
+        optional_dependencies = REQUIRED_TOOLS_COMPRESS | REQUIRED_TOOLS_FORMAT | REQUIRED_TOOLS_SPELL
     missing = []
-    for tool in dependencies:
+    for tool, tool_version_cmd in dependencies.items():
         if shutil.which(tool) is None:
             missing.append(tool)
+        else:
+            version_info = subprocess.run([tool, tool_version_cmd], capture_output=True, text=True)
+            logger.debug(f"[dependency] {tool}: {version_info.stdout.strip()}")
     missing_optional = []
-    for tool in optional_dependencies:
+    for tool, tool_version_cmd in optional_dependencies.items():
         if shutil.which(tool) is None:
             missing_optional.append(tool)
+        else:
+            version_info = subprocess.run([tool, tool_version_cmd], capture_output=True, text=True)
+            logger.debug(f"[dependency] {tool} (optional): {version_info.stdout.strip()}")
     if missing:
-        logger.error("Missing required tools:", ", ".join(missing))
-        logger.warn("Please install them before running the build")
+        logger.error(f"Missing required tools: {", ".join(missing)}")
+        logger.warning("Please install them before running the build")
         sys.exit(1)
     logger.debug("All required dependencies found")
     if missing_optional:
-        logger.warn("Missing optional tools:", ", ".join(missing_optional))
-        logger.warn("Install them to run all commands!")
+        logger.warning(f"Missing optional tools: {", ".join(missing_optional)}")
+        logger.warning("Install them to run all commands!")
     else:
         logger.debug("All optional dependencies found")
 
@@ -80,6 +100,8 @@ def run_latexmk(
     force=False,
     watch=False,
     watch_open=False,
+    silent=True,
+    verbose=False,
 ):
     output_dir = DIST_DIR / target_dir.name
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -90,6 +112,8 @@ def run_latexmk(
     try:
         run_command([
             "latexmk",
+            *(["-verbose"] if verbose else []),                   # more detailed logs
+            *(["-silent"] if silent else []),                     # hide detailed logs in terminal
             "-pdf",                                               # generate a pdf
             *(["-f", "-g"] if force else []),                     # force compilation
             *(["-pvc"] if watch else []),                         # continuous preview
@@ -129,7 +153,7 @@ def run_latexmk(
 
 def run_ghostscript(input_pdf_path: Path, output_pdf_path: Path, quality="printer"):
     if shutil.which("gs") is None:
-        logger.warn("Did not find program to compress the PDF output")
+        logger.warning("Did not find program to compress the PDF output")
         return None
     if not input_pdf_path.exists():
         raise FileNotFoundError(f"No PDF found to compress: {input_pdf_path!r}")
@@ -242,7 +266,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.1"
+        version="%(prog)s 0.0.2"
     )
 
     # subparser
@@ -264,6 +288,7 @@ def main():
     build_parser.add_argument("-f", "--force", action="store_true", help="force build", default=False)
     build_parser.add_argument("-w", "--watch", action="store_true", help="continuous build", default=False)
     build_parser.add_argument("-wo", "--watch-open", action="store_true", help="continuous build and open PDF", default=False)
+    build_parser.add_argument("-ns", "--no-silent", action="store_true", help="show all logs in terminal (logs are hidden per default)", default=False)
 
     # clean
     subparsers.add_parser("clean")
@@ -323,6 +348,8 @@ def main():
                 force=args.force,
                 watch=args.watch or args.watch_open,
                 watch_open=args.watch_open,
+                silent=not args.no_silent,
+                verbose=args.verbose,
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -336,6 +363,7 @@ def main():
                 pdf_engine=target.pdf_engine,
                 pdf_compression_quality=target.pdf_compression_quality,
                 pdf_output_name=target.pdf_output_name,
+                verbose=args.verbose,
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:

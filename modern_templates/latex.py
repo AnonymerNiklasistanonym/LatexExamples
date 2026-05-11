@@ -150,6 +150,10 @@ def run_latexmk(
         logger.info(f"Moved that PDF to {pdf_file_dist_uncompressed!r}")
         run_ghostscript(pdf_file_dist_uncompressed, pdf_file_dist, quality=pdf_compression_quality)
 
+        if os.path.getsize(pdf_file_dist_uncompressed) < os.path.getsize(pdf_file_dist):
+            shutil.copy(pdf_file_dist_uncompressed, pdf_file_dist)
+            logger.info(f"Copied uncompressed PDF to {pdf_file_dist!r} since its smaller")
+
 
 def run_ghostscript(input_pdf_path: Path, output_pdf_path: Path, quality="printer"):
     if shutil.which("gs") is None:
@@ -266,7 +270,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.2"
+        version="%(prog)s 0.0.3"
     )
 
     # subparser

@@ -9,18 +9,21 @@ import subprocess
 import sys
 from typing import Iterable, List, Optional
 import os
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Local application/library
 from config import CUSTOM_TARGETS
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    datefmt='%H:%M',
-)
 logger = logging.getLogger("latex")
+logger_format = logging.Formatter(
+    "%(asctime)s [%(levelname)s] %(message)s",
+    datefmt="%H:%M"
+)
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+console.setFormatter(logger_format)
+logger.addHandler(console)
 
 ROOT_DIR = Path(__file__).parent
 DIST_DIR = ROOT_DIR / "build"
@@ -100,7 +103,7 @@ def run_latexmk(
     force=False,
     watch=False,
     watch_open=False,
-    silent=True,
+    silent=False,
     verbose=False,
 ):
     output_dir = DIST_DIR / target_dir.name
@@ -265,12 +268,16 @@ def run_aspell(
 def main():
     parser = argparse.ArgumentParser(description="LaTeX build system")
     parser.add_argument('-v', '--verbose', action='store_true', help="Show more logs")
-
-    # version
+    parser.add_argument(
+        "--log-file",
+        type=str,
+        default=None,
+        help="create log file"
+    )
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.3"
+        version="%(prog)s 0.0.4"
     )
 
     # subparser
@@ -292,7 +299,7 @@ def main():
     build_parser.add_argument("-f", "--force", action="store_true", help="force build", default=False)
     build_parser.add_argument("-w", "--watch", action="store_true", help="continuous build", default=False)
     build_parser.add_argument("-wo", "--watch-open", action="store_true", help="continuous build and open PDF", default=False)
-    build_parser.add_argument("-ns", "--no-silent", action="store_true", help="show all logs in terminal (logs are hidden per default)", default=False)
+    build_parser.add_argument("-s", "--silent", action="store_true", help="hide all logs in terminal", default=False)
 
     # clean
     subparsers.add_parser("clean")
@@ -309,6 +316,12 @@ def main():
     # parse arguments
     args = parser.parse_args()
 
+    # add file logger if specified
+    if args.log_file:
+        file_handler = logging.FileHandler(args.log_file)
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(logger_format)
+        logger.addHandler(file_handler)
     # update log level depending on arguments
     logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
     # parser arguments check
@@ -352,12 +365,16 @@ def main():
                 force=args.force,
                 watch=args.watch or args.watch_open,
                 watch_open=args.watch_open,
-                silent=not args.no_silent,
+                silent=args.silent,
                 verbose=args.verbose,
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            executor.map(build_target, targets if target is None else [target])
+            for f in as_completed([
+                executor.submit(build_target, t)
+                for t in (targets if target is None else [target])
+            ]):
+                f.result()
 
     elif args.command is None:
 
@@ -371,11 +388,19 @@ def main():
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            executor.map(build_target, targets)
+            for f in as_completed([
+                executor.submit(build_target, t)
+                for t in (targets if target is None else [target])
+            ]):
+                f.result()
 
     else:
         parser.print_help()
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        logger.exception("Unexpected error")
+        sys.exit(1)

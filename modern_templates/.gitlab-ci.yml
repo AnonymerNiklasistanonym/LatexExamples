@@ -9,16 +9,27 @@ build_latex:
   image: texlive/texlive:latest
   stage: build
   script:
+    # Setup
     - apt-get update && apt-get install -y python3-venv biber
     - python3 -m venv venv
     - source venv/bin/activate
     - pip install --upgrade pip
     - pip install Pygments
-    - python3 build.py
+    # Build
+    - python3 latex.py --verbose --log-file latex.log build --silent
+    # Information
+    - python3 latex.py --version >> build/info.log 2>&1
+    - python3 latex.py --verbose info >> build/info.log 2>&1
   artifacts:
     paths:
+      # PDFs
       - build/*.pdf
-      #- build/**/*.pdf Subdirectory check not necessary, build script already copies the file
+      # Logs
+      - latex.log
+      - build/*.log
+      - build/**/*.log
+    exclude:
+      - build/*_uncompressed.pdf
     expire_in: 1 week
   only:
     - main

@@ -31,28 +31,3 @@ python latex.py build --watch-open protocol
 - Code Syntax Highlighting: `pygmentize` (on arch: `python-pygments`, on debian: `pip install Pygments`)
 
 > Format: `perl-file-homedir`, `perl-yaml-tiny`
-
-## Spellcheck
-
-```sh
-# Get source code
-git clone https://github.com/ggml-org/llama.cpp.git
-```
-
-```sh
-# Update source code and build
-cd llama.cpp
-git pull
-cmake -B build -DCMAKE_BUILD_TYPE=Release -DLLAMA_CURL=ON -DLLAMA_BUILD_TESTS=OFF && cmake --build build -j
-```
-
-```sh
-# Start llama.cpp web server
-cd llama.cpp
-./build/bin/llama-server -hf unsloth/gemma-4-E4B-it-GGUF:UD-Q4_K_XL --port 3000 --host 0.0.0.0
-```
-
-```sh
-# Start spellchecking by doing web requests to that web server (logfile and target are optional)
-uv run ./latex/proofreader/llamacpp_proofreader.py --logfile out.log protocol_01
-```

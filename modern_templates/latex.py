@@ -19,10 +19,7 @@ logger_format = logging.Formatter(
     "%(asctime)s [%(levelname)s] %(message)s",
     datefmt="%H:%M"
 )
-console = logging.StreamHandler()
-console.setLevel(logging.INFO)
-console.setFormatter(logger_format)
-logger.addHandler(console)
+logger.setLevel(logging.DEBUG)
 
 ROOT_DIR = Path(__file__).parent
 DIST_DIR = ROOT_DIR / "build"
@@ -102,7 +99,9 @@ def check_dependencies(dependencies=None, optional_dependencies=None):
 def find_targets() -> [BuildConfig]:
     targets: [BuildConfig] = []
     # Find all files starting with "config"
+    logger.debug(f"Find targets...")
     for file_path in Path(".").glob("config*.py"):
+        logger.debug(f"Found config: {file_path!r}")
         module_name = file_path.stem
 
         spec = importlib.util.spec_from_file_location(module_name, file_path)
@@ -112,7 +111,7 @@ def find_targets() -> [BuildConfig]:
         # Collect exported TARGETS values
         if hasattr(module, "TARGETS") and isinstance(module.TARGETS, list):
             targets.extend(module.TARGETS)
-    print(targets)
+            logger.debug(f"Found targets: {module.TARGETS!r}")
     return targets
 
 
@@ -306,7 +305,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.5"
+        version="%(prog)s 0.0.5b"
     )
 
     # subparser
@@ -345,14 +344,19 @@ def main():
     # parse arguments
     args = parser.parse_args()
 
-    # add file logger if specified
+    # add console logger
+    console = logging.StreamHandler()
+    console.setLevel(logging.DEBUG if args.verbose else logging.INFO)
+    console.setFormatter(logger_format)
+    logger.addHandler(console)
+
+    # add file logger if specified (always debug level)
     if args.log_file:
         file_handler = logging.FileHandler(args.log_file)
         file_handler.setLevel(logging.DEBUG)
         file_handler.setFormatter(logger_format)
         logger.addHandler(file_handler)
-    # update log level depending on arguments
-    logger.setLevel(logging.DEBUG if args.verbose else logging.INFO)
+
     # parser arguments check
     logger.debug(args)
 
@@ -360,13 +364,20 @@ def main():
     check_dependencies()
 
     targets = find_targets()
-    target = None
+    selected_targets: Optional[List[BuildConfig]] = None
     if hasattr(args, "target") and args.target:
-        try:
-            target = next(a for a in targets if a.target_dir.name == args.target)
-        except StopIteration:
-            logger.error(f"Unable to find target {args.target!r}!")
-            sys.exit(1)
+        if args.target.startswith(":"):
+            label = args.target[1:]
+            selected_targets = [tar for tar in targets if label in tar.labels]
+            if len(selected_targets) == 0:
+                logger.error(f"Unable to find any target using the label {label!r}!")
+                sys.exit(1)
+        else:
+            try:
+                selected_targets = [next(tar for tar in targets if tar.target_dir.name == args.target)]
+            except StopIteration:
+                logger.error(f"Unable to find target {args.target!r}!")
+                sys.exit(1)
 
     if args.command == "info":
         if args.targets:
@@ -376,11 +387,21 @@ def main():
     elif args.command == "clean":
         clean_build()
     elif args.command == "format":
-        run_latexindent(target_dir=target.target_dir if target is not None else None)
+        if selected_targets is not None:
+            for selected_target in selected_targets:
+                run_latexindent(target_dir=selected_target.target_dir)
+        else:
+            run_latexindent()
     elif args.command == "spell":
-        run_aspell(args.lang, target_dir=target.target_dir if target is not None else None)
+        if selected_targets is not None:
+            for selected_target in selected_targets:
+                run_aspell(args.lang, target_dir=selected_target.target_dir)
+                run_latexindent(target_dir=selected_target.target_dir)
+        else:
+            run_aspell(args.lang)
     elif args.command == "build":
-        if target is None and (args.watch or args.watch_open):
+        # exit for incompatible options
+        if selected_targets is not None and len(selected_targets) > 1 and (args.watch or args.watch_open):
             logger.error("Watching changes is not supported for multiple targets!")
             sys.exit(1)
 
@@ -400,7 +421,7 @@ def main():
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             for f in as_completed([
                 executor.submit(build_target, t)
-                for t in (targets if target is None else [target])
+                for t in (targets if selected_targets is None else selected_targets)
             ]):
                 f.result()
 
@@ -418,7 +439,7 @@ def main():
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             for f in as_completed([
                 executor.submit(build_target, t)
-                for t in (targets if target is None else [target])
+                for t in (targets if selected_targets is None else selected_targets)
             ]):
                 f.result()
 

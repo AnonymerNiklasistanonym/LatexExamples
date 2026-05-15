@@ -10,9 +10,8 @@ import sys
 from typing import Iterable, List, Optional
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-# Local application/library
-from config import CUSTOM_TARGETS
+import importlib.util
+from dataclasses import dataclass, field
 
 
 logger = logging.getLogger("latex")
@@ -51,6 +50,25 @@ REQUIRED_TOOLS_SPELL = {
 MAX_WORKERS = os.cpu_count() or 1
 
 
+@dataclass(order=True)
+class BuildConfig:
+    """Directory that contains the 'main.tex' file"""
+    target_dir: Path
+    """Optional: PDF engine (pdflatex, xetex)"""
+    pdf_engine: Optional[str] = None
+    """Optional: PDF compression quality (gs)"""
+    pdf_compression_quality: Optional[str] = None
+    """Optional: PDF output name"""
+    pdf_output_name: Optional[str] = None
+    """Optional: Labels"""
+    labels: Optional[List[str]] = field(default_factory=list)
+
+
+def run_command(cmd: List[str], cwd: Path = None, check: bool = True):
+    cwd_str = f" in {cwd!r}" if cwd is not None else ''
+    logger.debug(f"Running command: {(' '.join(cmd))!r}{cwd_str}")
+    subprocess.run(cmd, cwd=cwd, check=check)
+
 def check_dependencies(dependencies=None, optional_dependencies=None):
     if dependencies is None:
         dependencies = REQUIRED_TOOLS
@@ -81,10 +99,21 @@ def check_dependencies(dependencies=None, optional_dependencies=None):
     else:
         logger.debug("All optional dependencies found")
 
-def run_command(cmd: List[str], cwd: Path = None, check: bool = True):
-    cwd_str = f" in {cwd!r}" if cwd is not None else ''
-    logger.debug(f"Running command: {(' '.join(cmd))!r}{cwd_str}")
-    subprocess.run(cmd, cwd=cwd, check=check)
+def find_targets() -> [BuildConfig]:
+    targets: [BuildConfig] = []
+    # Find all files starting with "config"
+    for file_path in Path(".").glob("config*.py"):
+        module_name = file_path.stem
+
+        spec = importlib.util.spec_from_file_location(module_name, file_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        # Collect exported TARGETS values
+        if hasattr(module, "TARGETS") and isinstance(module.TARGETS, list):
+            targets.extend(module.TARGETS)
+    print(targets)
+    return targets
 
 
 def clean_build():
@@ -277,7 +306,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.4"
+        version="%(prog)s 0.0.5"
     )
 
     # subparser
@@ -330,8 +359,7 @@ def main():
     # general dependency check
     check_dependencies()
 
-    # find targets/target
-    targets = CUSTOM_TARGETS
+    targets = find_targets()
     target = None
     if hasattr(args, "target") and args.target:
         try:
@@ -343,8 +371,8 @@ def main():
     if args.command == "info":
         if args.targets:
             print('Targets:')
-            for target in CUSTOM_TARGETS:
-                print(f"- {target.target_dir.name}: {target}")
+            for target in targets:
+                print(f"- {target.target_dir.name} {target.labels}: {target}")
     elif args.command == "clean":
         clean_build()
     elif args.command == "format":

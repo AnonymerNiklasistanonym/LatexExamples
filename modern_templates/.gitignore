@@ -50,3 +50,4 @@ build/
 __pycache__
 _*wrapper.tex
 !*drawio.pdf
+!example.pdf

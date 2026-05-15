@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional
+
+# Local application/library
+from latex import BuildConfig
 
 ROOT_DIR = Path(__file__).parent
 PROTOCOL_DIR_PREFIX = "protocol_"
@@ -11,17 +13,6 @@ GROUP_NAME = "3"
 PROTOCOL_NAMES = {
     '00': 'example',
 }
-
-@dataclass(order=True)
-class BuildConfig:
-    """Directory that contains the 'main.tex' file"""
-    target_dir: Path
-    """Optional: PDF engine (pdflatex, xetex)"""
-    pdf_engine: Optional[str] = None
-    """Optional: PDF compression quality (gs)"""
-    pdf_compression_quality: Optional[str] = None
-    """Optional: PDF output name"""
-    pdf_output_name: Optional[str] = None
 
 
 def get_protocol_output_name(protocol_dir: Path) -> Optional[str]:
@@ -38,14 +29,14 @@ def get_protocol_output_name(protocol_dir: Path) -> Optional[str]:
 def discover_targets(root: Path) -> List[BuildConfig]:
     return sorted(
         (
-            BuildConfig(p, pdf_compression_quality="prepress", pdf_output_name=get_protocol_output_name(p))
+            BuildConfig(p, pdf_compression_quality="prepress", pdf_output_name=get_protocol_output_name(p), labels=["protocol"])
             for p in root.iterdir()
             if p.is_dir() and p.name.startswith(PROTOCOL_DIR_PREFIX)
         ),
         key=lambda x: x.target_dir.name
     )
 
-CUSTOM_TARGETS = [
-    discover_targets(ROOT_DIR),
+TARGETS = [
+    *discover_targets(ROOT_DIR),
     BuildConfig(ROOT_DIR / "example_protocol_single", pdf_compression_quality="prepress", pdf_output_name="protocol_your_name")
 ]

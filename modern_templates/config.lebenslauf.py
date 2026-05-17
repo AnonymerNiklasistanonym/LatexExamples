@@ -8,5 +8,5 @@ from latex import BuildConfig
 ROOT_DIR = Path(__file__).parent
 
 TARGETS = [
-    BuildConfig(ROOT_DIR / "lebenslauf_v1", pdf_output_name="lebenslauf_v1", pdf_compression_quality="prepress")
+    BuildConfig(ROOT_DIR / "lebenslauf_v1", pdf_output_name="lebenslauf_v1", pdf_compression_quality="prepress", labels="lebenslauf")
 ]

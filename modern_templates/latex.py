@@ -305,7 +305,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.5b"
+        version="%(prog)s 0.0.6"
     )
 
     # subparser
@@ -313,7 +313,7 @@ def main():
 
     # shared arguments
     target_options = argparse.ArgumentParser(add_help=False)
-    target_options.add_argument("target", nargs="?", help="do this only for a specific target")
+    target_options.add_argument("target_label", nargs="?", help="choose a specific target via the directory path or by using a label (using the colon prefix e.g. ':LABEL')")
 
     target_options_engine = argparse.ArgumentParser(add_help=False)
     target_options_engine.add_argument("-e", "--engine", nargs="?", help="pdf engine (xetex, pdflatex)", default=False)
@@ -365,19 +365,20 @@ def main():
 
     targets = find_targets()
     selected_targets: Optional[List[BuildConfig]] = None
-    if hasattr(args, "target") and args.target:
-        if args.target.startswith(":"):
-            label = args.target[1:]
+    if hasattr(args, "target_label") and args.target_label:
+        if args.target_label.startswith(":"):
+            label = args.target_label[1:]
             selected_targets = [tar for tar in targets if label in tar.labels]
             if len(selected_targets) == 0:
                 logger.error(f"Unable to find any target using the label {label!r}!")
                 sys.exit(1)
         else:
             try:
-                selected_targets = [next(tar for tar in targets if tar.target_dir.name == args.target)]
+                selected_targets = [next(tar for tar in targets if tar.target_dir.name == args.target_label)]
             except StopIteration:
-                logger.error(f"Unable to find target {args.target!r}!")
+                logger.error(f"Unable to find target {args.target_label!r}!")
                 sys.exit(1)
+        logger.debug(f"Selected targets: {selected_targets}")
 
     if args.command == "info":
         if args.targets:
@@ -439,7 +440,7 @@ def main():
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             for f in as_completed([
                 executor.submit(build_target, t)
-                for t in (targets if selected_targets is None else selected_targets)
+                for t in targets
             ]):
                 f.result()
 

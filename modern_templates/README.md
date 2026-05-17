@@ -2,16 +2,21 @@
 
 ## Build `.pdf`
 
-Running the following commands will create `.pdf`/`_compressed.pdf` files in `build` for all or specific targets listed in `config.py`.
+Running the following commands will create `.pdf`/`_compressed.pdf` files in `build` for all or specific targets listed in `config*.py` files.
 
 ```sh
 # assumes this is python3.11 or higher
 python latex.py
-# or a specific target
+# get list of all targets
+python latex.py info
+# build a specific target ('./protocol/main.tex') given its directory name
 python latex.py build protocol
 # automatically build latest version after file changes
 python latex.py build --watch protocol
 python latex.py build --watch-open protocol
+# if the target has a label in the config this can also be used
+# (all targets with this label 'protocol' will be built)
+python latex.py build :protocol
 ```
 
 > To customize the `.pdf` viewer for watch-open:

@@ -305,7 +305,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.6"
+        version="%(prog)s 0.0.7"
     )
 
     # subparser
@@ -451,6 +451,9 @@ def main():
 if __name__ == "__main__":
     try:
         main()
+    except KeyboardInterrupt:
+        logger.error("LaTeX build was interupted!")
+        sys.exit(1)
     except Exception as e:
         logger.exception("Unexpected error")
         sys.exit(1)

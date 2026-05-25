@@ -305,7 +305,7 @@ def main():
     parser.add_argument(
         "--version",
         action="version",
-        version="%(prog)s 0.0.7"
+        version="%(prog)s 0.0.8"
     )
 
     # subparser
@@ -401,9 +401,11 @@ def main():
         else:
             run_aspell(args.lang)
     elif args.command == "build":
+        build_targets = targets if selected_targets is None else selected_targets
+
         # exit for incompatible options
-        if selected_targets is not None and len(selected_targets) > 1 and (args.watch or args.watch_open):
-            logger.error("Watching changes is not supported for multiple targets!")
+        if len(build_targets) > 1 and (args.watch or args.watch_open):
+            logger.error(f"Watching changes is not supported for multiple targets! ({len(build_targets)})")
             sys.exit(1)
 
         def build_target(target):
@@ -422,7 +424,7 @@ def main():
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
             for f in as_completed([
                 executor.submit(build_target, t)
-                for t in (targets if selected_targets is None else selected_targets)
+                for t in build_targets
             ]):
                 f.result()
 

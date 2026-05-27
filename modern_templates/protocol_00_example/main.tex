@@ -5,13 +5,13 @@
 % ================
 \IfFileExists{acronyms.tex}{
     \input{acronyms}
-}
+}{}
 
 % References (local)
 % ==================
 \IfFileExists{references.bib}{
     \addbibresource{references.bib}
-}
+}{}
 
 
 % Metadata
@@ -23,11 +23,11 @@
 \newcommand{\reportName}{Beispiel}
 \newcommand{\reportTitle}{Laborprotokoll 0}
 \newcommand{\reportDate}{10.03.2026}
+\newcommand{\reportDateSubmission}{17.03.2026}
 
 \newcommand{\reportAuthors}{Anna Fuchs, Bruno Bär, Caro Eule}
 \newcommand{\reportEmails}{\{af123,bb456,ce789\}@hdm-stuttgart.de}
-
-\newcommand{\reportDateSubmission}{17.03.2026}
+\newcommand{\reportGroupName}{42}
 
 
 \input{../latex/templates/report_de/config}

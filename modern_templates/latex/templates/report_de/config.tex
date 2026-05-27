@@ -15,17 +15,13 @@
 \title{\reportTitle{}: \reportName}
 \author{\reportAuthors}
 \date{\reportDateSubmission}
-
-% PDF metadata and document links
-\usepackage[%
-	% Adds hyperlinks but removes the colored boxes/underlines around links
-	hidelinks,
-	% Adds pdf metadata
+% > Add PDF metadata
+\hypersetup{
 	pdfauthor={\reportAuthors},
 	pdftitle={\reportTitle{}: \reportName},
 	pdfsubject={\course\ (\university)},
 	pdfkeywords={\keywords},
-]{hyperref}
+}
 
 % Report title
 \makeatletter

@@ -12,18 +12,13 @@
 \title{\reportTitle}
 \author{\reportAuthor}
 \date{\reportDate}
-
-% PDF metadata and document links
-\usepackage[%
-	% Adds hyperlinks but removes the colored boxes/underlines around links
-	hidelinks,
-	% Adds pdf metadata
-	pdftex,
+% > Add PDF metadata
+\hypersetup{
 	pdfauthor={\reportAuthor (\reportEmail)},
 	pdftitle={\reportTitle},
 	pdfsubject={\course\ (\university)},
 	pdfkeywords={\keywords},
-]{hyperref}
+}
 
 % Report title
 \makeatletter

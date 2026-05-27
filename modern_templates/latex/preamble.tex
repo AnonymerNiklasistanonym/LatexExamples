@@ -32,10 +32,12 @@
 
 % Automatically expand used acronyms
 % \gls{}           → prints full form first time, acronym afterwards
-% \glsentrytext{}  → print acronym only (e.g. for captions)
+% \glspl{}         → prints plural
+% \glsentryshort{} → print acronym only (e.g. for captions and section titles)
 % \acrshort{}      → acronym only
 % \acrfull{}       → full form only
 \usepackage[acronym]{glossaries}
+\makeglossaries
 
 % Bibliography/Citations
 \usepackage[
@@ -54,12 +56,24 @@
 
 % Include graphics/images: \includegraphics -> image
 \usepackage{graphicx}
+% SVG support: \includesvg{...} -> converts to image so no text selection or vector graphics
+%\usepackage{svg}
 % Better looking tables (\toprule, \midrule, \bottomrule)
 \usepackage{booktabs}
 % Customize captions for figures/tables
 \usepackage{caption}
 % Subfigures inside a figure
 \usepackage{subcaption}
+
+% PDF metadata and document links
+\usepackage[%
+	% Adds hyperlinks but removes the colored boxes/underlines around links
+	hidelinks,
+	% Adds pdf metadata
+	pdftex,
+]{hyperref}
+% Automatic detection what is being referenced (table, figure, ...) -> \cref{...}
+\usepackage{cleveref}
 
 % Compute total page count
 \usepackage{lastpage}
@@ -74,6 +88,9 @@
 \usepackage{makecell}
 % Break weird lines for tables: tabular=|c|c|>{\RaggedRight\arraybackslash}p{7cm}|
 \usepackage{ragged2e}
+
+% For tables with footnotes -> \begin{tabular}...\tnote{2}...\end{tabular}\begin{tablenotes} \item[1] X \item[2] Y \end{tablenotes}
+\usepackage{threeparttable}
 
 % KOMA package for headers and footers
 \usepackage{scrlayer-scrpage}

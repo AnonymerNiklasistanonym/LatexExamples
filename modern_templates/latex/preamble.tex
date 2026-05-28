@@ -30,6 +30,39 @@
 % Provides customizable lists: itemize, enumerate
 \usepackage{enumitem}
 
+% PDF metadata and document links (must be before glossaries package)
+% Customize later e.g. for metadata using
+% \hypersetup{
+% 	pdfauthor={...},
+% 	pdftitle={...},
+% 	pdfsubject={...},
+% 	pdfkeywords={...}
+% 	% Example config to colorize all links/anchors blue
+% 	hidelinks=false,
+% 	colorlinks=true,
+% 	linkcolor=blue,
+% 	urlcolor=blue,
+% 	citecolor=blue,
+% }
+\usepackage[%
+	% Adds hyperlinks but removes the colored boxes/underlines around links
+	hidelinks,
+	% Adds pdf metadata
+	pdftex,
+]{hyperref}
+% Automatic detection what is being referenced (table, figure, ...) -> \cref{...}
+% \cref{fig:trace_others,fig:ping_others}, \cref{fig:trace_others}
+% Customize names for other languages using:
+% \crefname{section}{Abschnitt}{Abschnitte}
+% \Crefname{section}{Abschnitt}{Abschnitte}
+% \crefname{figure}{Abbildung}{Abbildungen}
+% \Crefname{figure}{Abbildung}{Abbildungen}
+% \crefname{table}{Tabelle}{Tabellen}
+% \Crefname{table}{Tabelle}{Tabellen}
+% \crefname{equation}{Gleichung}{Gleichungen}
+% \Crefname{equation}{Gleichung}{Gleichungen}
+\usepackage{cleveref}
+
 % Automatically expand used acronyms
 % \gls{}           → prints full form first time, acronym afterwards
 % \glspl{}         → prints plural
@@ -37,7 +70,8 @@
 % \acrshort{}      → acronym only
 % \acrfull{}       → full form only
 \usepackage[acronym]{glossaries}
-\makeglossaries
+\glsdisablehyper % disable links from acronyms to acronym list
+\makeglossaries % create index
 
 % Bibliography/Citations
 \usepackage[
@@ -64,16 +98,6 @@
 \usepackage{caption}
 % Subfigures inside a figure
 \usepackage{subcaption}
-
-% PDF metadata and document links
-\usepackage[%
-	% Adds hyperlinks but removes the colored boxes/underlines around links
-	hidelinks,
-	% Adds pdf metadata
-	pdftex,
-]{hyperref}
-% Automatic detection what is being referenced (table, figure, ...) -> \cref{...}
-\usepackage{cleveref}
 
 % Compute total page count
 \usepackage{lastpage}

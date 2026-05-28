@@ -23,9 +23,9 @@
 % [scrlayer-scrpage] set headers and footers
 \clearpairofpagestyles % clears default header/footer content
 \cfoot[%
-	\normalfont\pagemark\ of \pageref{LastPage}
+	\normalfont\pagemark\ of {\hypersetup{linkcolor=black}\pageref{LastPage}}
 ]{%
-	\normalfont\pagemark\ of \pageref{LastPage}
+	\normalfont\pagemark\ of {\hypersetup{linkcolor=black}\pageref{LastPage}}
 }% set centered footer content
 
 % [siunitx] configure scientific units

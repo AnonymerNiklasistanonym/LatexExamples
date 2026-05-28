@@ -82,11 +82,11 @@
 % Cite only the first occurence
 \makeatletter
 \newcommand{\firstcite}[2]{%
-  \ifcsname cited@#1\endcsname
-    #2%
-  \else
-    \expandafter\gdef\csname cited@#1\endcsname{}%
-    #2~\cite{#1}%
-  \fi
+	\ifcsname cited@#1\endcsname
+		#2%
+	\else
+		\expandafter\gdef\csname cited@#1\endcsname{}%
+		#2~\cite{#1}%
+	\fi
 }
 \makeatother

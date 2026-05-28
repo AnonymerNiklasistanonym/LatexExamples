@@ -23,9 +23,9 @@
 % [scrlayer-scrpage] set headers and footers
 \clearpairofpagestyles % clears default header/footer content
 \cfoot[%
-	\normalfont\pagemark\ von \pageref{LastPage}
+	\normalfont\pagemark\ von {\hypersetup{linkcolor=black}\pageref{LastPage}}
 ]{%
-	\normalfont\pagemark\ von \pageref{LastPage}
+	\normalfont\pagemark\ von {\hypersetup{linkcolor=black}\pageref{LastPage}}
 }                      % set centered footer content
 
 % [siunitx] configure scientific units
@@ -34,6 +34,16 @@
 	separate-uncertainty = true,
 	per-mode = symbol
 }
+
+% [cleveref] configure reference names for non english languages
+\crefname{section}{Abschnitt}{Abschnitte}
+\Crefname{section}{Abschnitt}{Abschnitte}
+\crefname{figure}{Abbildung}{Abbildungen}
+\Crefname{figure}{Abbildung}{Abbildungen}
+\crefname{table}{Tabelle}{Tabellen}
+\Crefname{table}{Tabelle}{Tabellen}
+\crefname{equation}{Gleichung}{Gleichungen}
+\Crefname{equation}{Gleichung}{Gleichungen}
 
 % Load global macros
 \input{../latex/macros}

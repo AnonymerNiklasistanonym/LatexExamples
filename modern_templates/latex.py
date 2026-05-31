@@ -70,7 +70,10 @@ def check_dependencies(dependencies=None, optional_dependencies=None):
         dependencies = REQUIRED_TOOLS
     if optional_dependencies is None:
         optional_dependencies = (
-            REQUIRED_TOOLS_COMPRESS | REQUIRED_TOOLS_FORMAT | REQUIRED_TOOLS_SPELL
+            REQUIRED_TOOLS_COMPRESS
+            | REQUIRED_TOOLS_LINEARLIZE
+            | REQUIRED_TOOLS_FORMAT
+            | REQUIRED_TOOLS_SPELL
         )
     missing = []
     for tool, tool_version_cmd in dependencies.items():
@@ -195,9 +198,13 @@ def run_latexmk(
     if pdf_compression_quality is not None:
         shutil.move(pdf_file_dist, pdf_file_dist_uncompressed)
         logger.info(f"Moved original PDF to {pdf_file_dist_uncompressed!r}")
-        if not compress_pdf(pdf_file_dist_uncompressed, pdf_file_dist, quality=pdf_compression_quality):
+        if not compress_pdf(
+            pdf_file_dist_uncompressed, pdf_file_dist, quality=pdf_compression_quality
+        ):
             shutil.move(pdf_file_dist_uncompressed, pdf_file_dist)
-        elif os.path.getsize(pdf_file_dist_uncompressed) < os.path.getsize(pdf_file_dist):
+        elif os.path.getsize(pdf_file_dist_uncompressed) < os.path.getsize(
+            pdf_file_dist
+        ):
             shutil.copy(pdf_file_dist_uncompressed, pdf_file_dist)
             logger.info(
                 f"Copied uncompressed PDF to {pdf_file_dist!r} since its smaller"
@@ -208,7 +215,9 @@ def run_latexmk(
         shutil.move(pdf_file_dist_unoptimized, pdf_file_dist)
 
 
-def compress_pdf(input_pdf_path: Path, output_pdf_path: Path, quality="printer") -> bool:
+def compress_pdf(
+    input_pdf_path: Path, output_pdf_path: Path, quality="printer"
+) -> bool:
     if shutil.which("gs") is None:
         logger.warning("Did not find program to compress the PDF output")
         return False

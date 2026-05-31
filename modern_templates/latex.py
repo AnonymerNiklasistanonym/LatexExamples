@@ -13,11 +13,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import importlib.util
 from dataclasses import dataclass, field
 
-
 logger = logging.getLogger("latex")
 logger_format = logging.Formatter(
-    "%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%H:%M"
+    "%(asctime)s [%(levelname)s] %(message)s", datefmt="%H:%M"
 )
 logger.setLevel(logging.DEBUG)
 
@@ -37,12 +35,11 @@ REQUIRED_TOOLS = {
 REQUIRED_TOOLS_COMPRESS = {
     "gs": "--version",
 }
-REQUIRED_TOOLS_FORMAT = {
-    "latexindent": "--version"
+REQUIRED_TOOLS_LINEARLIZE = {
+    "qpdf": "--version",
 }
-REQUIRED_TOOLS_SPELL = {
-    "aspell": "--version"
-}
+REQUIRED_TOOLS_FORMAT = {"latexindent": "--version"}
+REQUIRED_TOOLS_SPELL = {"aspell": "--version"}
 
 MAX_WORKERS = os.cpu_count() or 1
 
@@ -50,6 +47,7 @@ MAX_WORKERS = os.cpu_count() or 1
 @dataclass(order=True)
 class BuildConfig:
     """Directory that contains the 'main.tex' file"""
+
     target_dir: Path
     """Optional: PDF engine (pdflatex, xetex)"""
     pdf_engine: Optional[str] = None
@@ -62,29 +60,38 @@ class BuildConfig:
 
 
 def run_command(cmd: List[str], cwd: Path = None, check: bool = True):
-    cwd_str = f" in {cwd!r}" if cwd is not None else ''
+    cwd_str = f" in {cwd!r}" if cwd is not None else ""
     logger.debug(f"Running command: {(' '.join(cmd))!r}{cwd_str}")
     subprocess.run(cmd, cwd=cwd, check=check)
+
 
 def check_dependencies(dependencies=None, optional_dependencies=None):
     if dependencies is None:
         dependencies = REQUIRED_TOOLS
     if optional_dependencies is None:
-        optional_dependencies = REQUIRED_TOOLS_COMPRESS | REQUIRED_TOOLS_FORMAT | REQUIRED_TOOLS_SPELL
+        optional_dependencies = (
+            REQUIRED_TOOLS_COMPRESS | REQUIRED_TOOLS_FORMAT | REQUIRED_TOOLS_SPELL
+        )
     missing = []
     for tool, tool_version_cmd in dependencies.items():
         if shutil.which(tool) is None:
             missing.append(tool)
         else:
-            version_info = subprocess.run([tool, tool_version_cmd], capture_output=True, text=True)
+            version_info = subprocess.run(
+                [tool, tool_version_cmd], capture_output=True, text=True
+            )
             logger.debug(f"[dependency] {tool}: {version_info.stdout.strip()}")
     missing_optional = []
     for tool, tool_version_cmd in optional_dependencies.items():
         if shutil.which(tool) is None:
             missing_optional.append(tool)
         else:
-            version_info = subprocess.run([tool, tool_version_cmd], capture_output=True, text=True)
-            logger.debug(f"[dependency] {tool} (optional): {version_info.stdout.strip()}")
+            version_info = subprocess.run(
+                [tool, tool_version_cmd], capture_output=True, text=True
+            )
+            logger.debug(
+                f"[dependency] {tool} (optional): {version_info.stdout.strip()}"
+            )
     if missing:
         logger.error(f"Missing required tools: {", ".join(missing)}")
         logger.warning("Please install them before running the build")
@@ -95,6 +102,7 @@ def check_dependencies(dependencies=None, optional_dependencies=None):
         logger.warning("Install them to run all commands!")
     else:
         logger.debug("All optional dependencies found")
+
 
 def find_targets() -> [BuildConfig]:
     targets: [BuildConfig] = []
@@ -125,9 +133,9 @@ def clean_build():
 
 def run_latexmk(
     target_dir: Path,
-    pdf_compression_quality: Optional[str]=None,
-    pdf_output_name: Optional[str]=None,
-    pdf_engine: Optional[str]=None,
+    pdf_compression_quality: Optional[str] = None,
+    pdf_output_name: Optional[str] = None,
+    pdf_engine: Optional[str] = None,
     force=False,
     watch=False,
     watch_open=False,
@@ -141,22 +149,29 @@ def run_latexmk(
 
     # Run latexmk from protocol folder
     try:
-        run_command([
-            "latexmk",
-            *(["-verbose"] if verbose else []),                   # more detailed logs
-            *(["-silent"] if silent else []),                     # hide detailed logs in terminal
-            "-pdf",                                               # generate a pdf
-            *(["-f", "-g"] if force else []),                     # force compilation
-            *(["-pvc"] if watch else []),                         # continuous preview
-            *([] if watch_open else ["-view=none"]),              # don't auto open pdf when doing continuous preview
-            "-cd",                                                # change directory to the location of the .tex file before compiling
-            f"-output-directory={output_dir}",                    # redirects all build artifacts to an out of source build directory
-            *([f"-pdflatex={pdf_engine}"] if pdf_engine else []), # set LaTeX engine (pdflatex, xetex)
-            "-shell-escape",                                      # escape code symbols that otherwise break LaTeX compiler
-            f"-jobname={target_dir.name}",                        # output .pdf name
-            "--file-line-error",                                  # show what file and what line actually threw an error
-            "main.tex"
-        ], cwd=target_dir)
+        run_command(
+            [
+                "latexmk",
+                *(["-verbose"] if verbose else []),  # more detailed logs
+                *(["-silent"] if silent else []),  # hide detailed logs in terminal
+                "-pdf",  # generate a pdf
+                *(["-f", "-g"] if force else []),  # force compilation
+                *(["-pvc"] if watch else []),  # continuous preview
+                *(
+                    [] if watch_open else ["-view=none"]
+                ),  # don't auto open pdf when doing continuous preview
+                "-cd",  # change directory to the location of the .tex file before compiling
+                f"-output-directory={output_dir}",  # redirects all build artifacts to an out of source build directory
+                *(
+                    [f"-pdflatex={pdf_engine}"] if pdf_engine else []
+                ),  # set LaTeX engine (pdflatex, xetex)
+                "-shell-escape",  # escape code symbols that otherwise break LaTeX compiler
+                f"-jobname={target_dir.name}",  # output .pdf name
+                "--file-line-error",  # show what file and what line actually threw an error
+                "main.tex",
+            ],
+            cwd=target_dir,
+        )
     except subprocess.CalledProcessError:
         logger.error("LaTeX build failed!")
         sys.exit(1)
@@ -169,6 +184,7 @@ def run_latexmk(
     pdf_file_base_name = pdf_output_name or target_dir.name
     pdf_file_dist = DIST_DIR / f"{pdf_file_base_name}.pdf"
     pdf_file_dist_uncompressed = DIST_DIR / f"{pdf_file_base_name}_uncompressed.pdf"
+    pdf_file_dist_unoptimized = DIST_DIR / f"{pdf_file_base_name}_unoptimized.pdf"
 
     if not pdf_file.exists():
         raise Exception("PDF not found, build failed")
@@ -178,48 +194,74 @@ def run_latexmk(
 
     if pdf_compression_quality is not None:
         shutil.move(pdf_file_dist, pdf_file_dist_uncompressed)
-        logger.info(f"Moved that PDF to {pdf_file_dist_uncompressed!r}")
-        run_ghostscript(pdf_file_dist_uncompressed, pdf_file_dist, quality=pdf_compression_quality)
-
-        if os.path.getsize(pdf_file_dist_uncompressed) < os.path.getsize(pdf_file_dist):
+        logger.info(f"Moved original PDF to {pdf_file_dist_uncompressed!r}")
+        if not compress_pdf(pdf_file_dist_uncompressed, pdf_file_dist, quality=pdf_compression_quality):
+            shutil.move(pdf_file_dist_uncompressed, pdf_file_dist)
+        elif os.path.getsize(pdf_file_dist_uncompressed) < os.path.getsize(pdf_file_dist):
             shutil.copy(pdf_file_dist_uncompressed, pdf_file_dist)
-            logger.info(f"Copied uncompressed PDF to {pdf_file_dist!r} since its smaller")
+            logger.info(
+                f"Copied uncompressed PDF to {pdf_file_dist!r} since its smaller"
+            )
+
+    shutil.move(pdf_file_dist, pdf_file_dist_unoptimized)
+    if not linearize_pdf(pdf_file_dist_unoptimized, pdf_file_dist):
+        shutil.move(pdf_file_dist_unoptimized, pdf_file_dist)
 
 
-def run_ghostscript(input_pdf_path: Path, output_pdf_path: Path, quality="printer"):
+def compress_pdf(input_pdf_path: Path, output_pdf_path: Path, quality="printer") -> bool:
     if shutil.which("gs") is None:
         logger.warning("Did not find program to compress the PDF output")
-        return None
+        return False
     if not input_pdf_path.exists():
         raise FileNotFoundError(f"No PDF found to compress: {input_pdf_path!r}")
     try:
-        run_command([
-            "gs",
-            "-sDEVICE=pdfwrite",                    # Generating a new PDF
-            f"-dPDFSETTINGS=/{quality}",            # Preset for compression/quality
-            #                                         - /screen:   lowest quality, smallest size
-            #                                         - /ebook:    medium quality
-            #                                         - /printer:  high quality
-            #                                         - /prepress: very high quality (minimal compression)
-            "-dNOPAUSE",                           # Prevents Ghostscript from waiting for user input between pages
-            "-dQUIET",                             # Suppresses routine informational output (cleaner logs)
-            "-dBATCH",                             # Ensures Ghostscript exits automatically after processing
-            f"-sOutputFile={output_pdf_path}", # Output file path
-            str(input_pdf_path),
-        ])
-        logger.info(f"Created compressed PDF: {output_pdf_path!r} (quality={quality!r})")
+        run_command(
+            [
+                "gs",
+                "-sDEVICE=pdfwrite",  # Generating a new PDF
+                f"-dPDFSETTINGS=/{quality}",  # Preset for compression/quality
+                #                               - /screen:   lowest quality, smallest size
+                #                               - /ebook:    medium quality
+                #                               - /printer:  high quality
+                #                               - /prepress: very high quality (minimal compression)
+                "-dNOPAUSE",  # Prevents Ghostscript from waiting for user input between pages
+                "-dQUIET",  # Suppresses routine informational output (cleaner logs)
+                "-dBATCH",  # Ensures Ghostscript exits automatically after processing
+                f"-sOutputFile={output_pdf_path}",  # Output file path
+                str(input_pdf_path),
+            ]
+        )
+        logger.info(
+            f"Created compressed PDF: {output_pdf_path!r} (quality={quality!r})"
+        )
+        return True
     except subprocess.CalledProcessError as e:
         raise RuntimeError("Ghostscript compression failed") from e
 
 
+def linearize_pdf(input_pdf_path: Path, output_pdf_path: Path) -> bool:
+    if shutil.which("qpdf") is None:
+        logger.warning("Did not find program to linearize the PDF output")
+        return False
+    if not input_pdf_path.exists():
+        raise FileNotFoundError(f"No PDF found to linearize: {input_pdf_path!r}")
+    try:
+        run_command(
+            [
+                "qpdf",
+                "--linearize",  # Optimize for incremental loading over a network
+                str(input_pdf_path),
+                str(output_pdf_path),
+            ]
+        )
+        logger.info(f"Created linearized PDF: {output_pdf_path!r}")
+        return True
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError("qpdf linearization failed") from e
+
+
 def latexindent_tex_file(tex_file):
-    run_command([
-        "latexindent",
-        "-w",
-        "-s",
-        "-l",
-        str(tex_file)
-    ], cwd=LATEX_INDENT_DIR)
+    run_command(["latexindent", "-w", "-s", "-l", str(tex_file)], cwd=LATEX_INDENT_DIR)
     logger.info(f"Formatted {tex_file}")
 
 
@@ -228,7 +270,8 @@ def run_latexindent(target_dir: Optional[Path] = None):
     exclude_dirs = [DIST_DIR.name]
 
     files = [
-        tex_file for tex_file in (repo_root if target_dir is None else target_dir).rglob("*.tex")
+        tex_file
+        for tex_file in (repo_root if target_dir is None else target_dir).rglob("*.tex")
         if not any(parent.name in exclude_dirs for parent in tex_file.parents)
     ]
 
@@ -251,33 +294,16 @@ def run_aspell(
     if extra_dicts is None:
         extra_dicts = ["en"]
     # aspell expects comma-separated list
-    #cmd.append(f"--add-extra-dicts={",".join(extra_dicts)}")
+    # cmd.append(f"--add-extra-dicts={",".join(extra_dicts)}")
     # append personal dictonary for the language
     lang_dir = LATEX_ASPELL_DIR / f"dict_{lang}"
     cmd.append(f"--personal={lang_dir}")
     cmd.append("--mode=tex")
     if tex_commands is None:
-        tex_commands = [
-            "addbibresource p",
-            "alph p",
-            "english p",
-            "codefile opp",
-            "color p",
-            "csvautotabular pp",
-            "definecolor ppp",
-            "GenericError pp",
-            "gls p",
-            "IfFileExists p",
-            "inputminted opp",
-            "mintinline pp",
-            "newacronym p p P",
-            "newcommand pp",
-            "requirecommand p",
-            "textcolor pP",
-            "texttt p",
-            "todo p",
-            "sisetup p",
-        ]
+        with (LATEX_ASPELL_DIR / "commands.txt").open("r", encoding="utf-8") as f:
+            tex_commands = [
+                line.strip() for line in f if line.strip() and not line.startswith("#")
+            ]
     # aspell expects comma-separated list
     cmd.extend([f"--add-tex-command={tex_command}" for tex_command in tex_commands])
 
@@ -295,39 +321,59 @@ def run_aspell(
 
 def main():
     parser = argparse.ArgumentParser(description="LaTeX build system")
-    parser.add_argument('-v', '--verbose', action='store_true', help="Show more logs")
-    parser.add_argument(
-        "--log-file",
-        type=str,
-        default=None,
-        help="create log file"
-    )
-    parser.add_argument(
-        "--version",
-        action="version",
-        version="%(prog)s 0.0.8"
-    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show more logs")
+    parser.add_argument("--log-file", type=str, default=None, help="create log file")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.0.10")
 
     # subparser
     subparsers = parser.add_subparsers(dest="command")
 
     # shared arguments
     target_options = argparse.ArgumentParser(add_help=False)
-    target_options.add_argument("target_label", nargs="?", help="choose a specific target via the directory path or by using a label (using the colon prefix e.g. ':LABEL')")
+    target_options.add_argument(
+        "target_label",
+        nargs="?",
+        help="choose a specific target via the directory path or by using a label (using the colon prefix e.g. ':LABEL')",
+    )
 
     target_options_engine = argparse.ArgumentParser(add_help=False)
-    target_options_engine.add_argument("-e", "--engine", nargs="?", help="pdf engine (xetex, pdflatex)", default=False)
+    target_options_engine.add_argument(
+        "-e", "--engine", nargs="?", help="pdf engine (xetex, pdflatex)", default=False
+    )
 
     # info
     info_parser = subparsers.add_parser("info")
-    info_parser.add_argument("--targets", action="store_true", help="show targets (default: %(default)s)", default=True)
+    info_parser.add_argument(
+        "--targets",
+        action="store_true",
+        help="show targets (default: %(default)s)",
+        default=True,
+    )
 
     # build
-    build_parser = subparsers.add_parser("build", parents=[target_options, target_options_engine])
-    build_parser.add_argument("-f", "--force", action="store_true", help="force build", default=False)
-    build_parser.add_argument("-w", "--watch", action="store_true", help="continuous build", default=False)
-    build_parser.add_argument("-wo", "--watch-open", action="store_true", help="continuous build and open PDF", default=False)
-    build_parser.add_argument("-s", "--silent", action="store_true", help="hide all logs in terminal", default=False)
+    build_parser = subparsers.add_parser(
+        "build", parents=[target_options, target_options_engine]
+    )
+    build_parser.add_argument(
+        "-f", "--force", action="store_true", help="force build", default=False
+    )
+    build_parser.add_argument(
+        "-w", "--watch", action="store_true", help="continuous build", default=False
+    )
+    build_parser.add_argument(
+        "-wo",
+        "--watch-open",
+        action="store_true",
+        help="continuous build and open PDF",
+        default=False,
+    )
+    build_parser.add_argument(
+        "-s",
+        "--silent",
+        action="store_true",
+        help="hide all logs in terminal",
+        default=False,
+    )
 
     # clean
     subparsers.add_parser("clean")
@@ -337,7 +383,12 @@ def main():
 
     # spell
     spell_parser = subparsers.add_parser("spell", parents=[target_options])
-    spell_parser.add_argument("--lang", nargs="?", help="use a specific language dictionary (default: %(default)s)", default="en")
+    spell_parser.add_argument(
+        "--lang",
+        nargs="?",
+        help="use a specific language dictionary (default: %(default)s)",
+        default="en",
+    )
 
     # ---------------------------------------------------------------
 
@@ -374,7 +425,13 @@ def main():
                 sys.exit(1)
         else:
             try:
-                selected_targets = [next(tar for tar in targets if tar.target_dir.name == args.target_label)]
+                selected_targets = [
+                    next(
+                        tar
+                        for tar in targets
+                        if tar.target_dir.name == args.target_label
+                    )
+                ]
             except StopIteration:
                 logger.error(f"Unable to find target {args.target_label!r}!")
                 sys.exit(1)
@@ -382,7 +439,7 @@ def main():
 
     if args.command == "info":
         if args.targets:
-            print('Targets:')
+            print("Targets:")
             for target in targets:
                 print(f"- {target.target_dir.name} {target.labels}: {target}")
     elif args.command == "clean":
@@ -405,7 +462,9 @@ def main():
 
         # exit for incompatible options
         if len(build_targets) > 1 and (args.watch or args.watch_open):
-            logger.error(f"Watching changes is not supported for multiple targets! ({len(build_targets)})")
+            logger.error(
+                f"Watching changes is not supported for multiple targets! ({len(build_targets)})"
+            )
             sys.exit(1)
 
         def build_target(target):
@@ -422,10 +481,9 @@ def main():
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            for f in as_completed([
-                executor.submit(build_target, t)
-                for t in build_targets
-            ]):
+            for f in as_completed(
+                [executor.submit(build_target, t) for t in build_targets]
+            ):
                 f.result()
 
     elif args.command is None:
@@ -440,10 +498,7 @@ def main():
             )
 
         with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            for f in as_completed([
-                executor.submit(build_target, t)
-                for t in targets
-            ]):
+            for f in as_completed([executor.submit(build_target, t) for t in targets]):
                 f.result()
 
     else:

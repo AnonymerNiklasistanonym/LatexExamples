@@ -10,7 +10,7 @@ build_latex:
   stage: build
   script:
     # Setup
-    - apt-get update && apt-get install -y python3-venv biber
+    - apt-get update && apt-get install -y python3-venv biber qpdf
     - python3 -m venv venv
     - source venv/bin/activate
     - pip install --upgrade pip
@@ -30,6 +30,7 @@ build_latex:
       - build/**/*.log
     exclude:
       - build/*_uncompressed.pdf
+      - build/*_unoptimized.pdf
     expire_in: 1 week
   only:
     - main

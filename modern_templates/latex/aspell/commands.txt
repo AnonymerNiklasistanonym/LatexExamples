@@ -1,0 +1,28 @@
+# p = a required parameter in braces: {...}
+# o = an optional parameter in brackets: [...]
+# P = like p, but the contents are not checked for spelling
+# O = like o, but the contents are not checked for spelling
+addbibresource p
+alph p
+codefile opp
+codeinline opp
+color p
+csvautotabular pp
+definecolor ppp
+english p
+firstcite p
+GenericError pp
+gls p
+glsentryshort p
+glspl p
+IfFileExists p
+inputminted opp
+mintinline pp
+newacronym p p P
+newcommand pp
+requirecommand p
+sisetup p
+textcolor pP
+texttt p
+todo p
+VerbatimInput op

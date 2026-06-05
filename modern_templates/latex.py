@@ -96,12 +96,12 @@ def check_dependencies(dependencies=None, optional_dependencies=None):
                 f"[dependency] {tool} (optional): {version_info.stdout.strip()}"
             )
     if missing:
-        logger.error(f"Missing required tools: {", ".join(missing)}")
+        logger.error(f"Missing required tools: {', '.join(missing)}")
         logger.warning("Please install them before running the build")
         sys.exit(1)
     logger.debug("All required dependencies found")
     if missing_optional:
-        logger.warning(f"Missing optional tools: {", ".join(missing_optional)}")
+        logger.warning(f"Missing optional tools: {', '.join(missing_optional)}")
         logger.warning("Install them to run all commands!")
     else:
         logger.debug("All optional dependencies found")

@@ -28,6 +28,8 @@
 % Start the document
 \begin{document}
 
+\fallbackinput{data/language.tex}{template/language.tex}
+
 \makecvtitle
 
 \fallbackinput{data/content.tex}{template/content.tex}
@@ -52,11 +54,17 @@
 % Beschriftung "Ort, Datum" und "Unterschrift"
 \noindent\begin{minipage}[t]{6cm}
 	\raggedleft
-	\textit{Ort, Datum}  % Beschriftung für den linken Bereich
+	% Beschriftung für den linken Bereich
+	\iflanguage{ngerman}
+	{\textit{Ort, Datum}}
+	{\textit{Location, Date}}
 \end{minipage}%
 \begin{minipage}[t]{7.25cm}
 	\raggedleft
-	\textit{Unterschrift}  % Beschriftung für den rechten Bereich
+	% Beschriftung für den rechten Bereich
+	\iflanguage{ngerman}
+	{\textit{Unterschrift}}
+	{\textit{Signature}}
 \end{minipage}
 
 \end{document}
